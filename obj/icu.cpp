@@ -5,31 +5,22 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <numeric>
-#include <thread>
 
 #define SERVO_PIN 18 // BCM hardware PWM servo pin
-
-struct thread_data {
-	int height;
-	int width;
-	cv::Mat values;
-	double middlepoint;
-};
-
 
 void Dilation( int, void* );
 void MyFilledCircle( cv::Mat img, cv::Point center );
 double VectorAvg( std::vector<int> const& v );
 void CloseWindows();
-void *DisplayHistogram( void *threadarg );
+void DisplayHistogram( int height, int width, cv::Mat values, double middlepoint );
 
-cv::Mat src, crop, finalImage;
+cv::Mat src;
 
-void *ClaheEqualization( void * ) {
+cv::Mat ClaheEqualization(cv::Mat& source) {
 	// Clahe equalization
 	// READ RGB color image and convert it to Lab
     cv::Mat lab_image;
-    cv::cvtColor(crop, lab_image, CV_BGR2Lab);
+    cv::cvtColor(source, lab_image, CV_BGR2Lab);
 
     // Extract the L channel
     std::vector<cv::Mat> lab_planes(3);
@@ -48,19 +39,16 @@ void *ClaheEqualization( void * ) {
 
 	// convert back to RGB
    	cv::Mat image_clahe;
-   	cv::cvtColor(lab_image, crop, CV_Lab2BGR);
+   	cv::cvtColor(lab_image, image_clahe, CV_Lab2BGR);
 
-	pthread_exit(NULL);
+	return image_clahe;
+	
 }
 
 // Timer functionality for code performance testing
 double t = 0;
 
-int main(int argc,char** argv){
-
-	pthread_t threads[3];
-	int thread;
-	struct thread_data td;
+int main() {
 
 	// Define manual driving control
 	bool detect = true;
@@ -68,36 +56,34 @@ int main(int argc,char** argv){
 	// Define video capture
 	cv::VideoCapture cap("../test_footage/output.avi");
 
-
 	while ( cap.isOpened() )
     {
 		// Send VideoCapture to src Mat
 		cap >> src;
-        if(src.empty()) break;
-
-		// Performance test
-		t = (double)cv::getTickCount();
-
-		// Get source image height and width
-		int src_height = src.size().height;
-		int src_width = src.size().width;
 
 		char key = (char) cv::waitKey(1);
-		//char key = 'p'; 
 
-		if (key == 'p') detect = true;
-		else if (key == 'o') detect = false;
+		//if (key == 'p') detect = true;
+		//else if (key == 'o') detect = false;
 
 		if (detect)
 		{
-			//Mat crop;
+			// Performance test
+			t = (double)cv::getTickCount();
+
+			// Get source image height and width
+			int src_height = src.size().height;
+			int src_width = src.size().width;
+
+			// Select crop region
 			cv::Rect crop_region(0, 120, src_width, 120);
 
-			crop=src(crop_region);			
+			// Crop the image
+			cv::Mat crop;
+			crop=src(crop_region);
 
-			thread = pthread_create(&threads[1], NULL, ClaheEqualization, NULL);
-
-			//Mat image_clahe = ClaheEqualization(crop);
+			// Apply CLAHE to capture
+			cv::Mat image_clahe = ClaheEqualization(crop);
 			
 			// Convert to HSV
 			cv::Mat hsv;
@@ -136,32 +122,22 @@ int main(int argc,char** argv){
 
 			std::printf("Average: %.3f\n", average);
 
-			td.height = src_height;
-			td.width = src_width;
-			td.values = histogramValues;
-			td.middlepoint = average;
+			DisplayHistogram( src_height, src_width, histogramValues, average);
 
-			thread = pthread_create(&threads[0], NULL, DisplayHistogram, (void *)&td);
-
-			//DisplayHistogram( src_height, src_width, histogramValues, average);
-
-        	//imshow("hsv", hsv);
-			//imshow("detectedFloor", frame_threshold);
+        	imshow("hsv", hsv);
+			imshow("detectedFloor", frame_threshold);
 		}	
 		else 
 		{
 			CloseWindows();
 
 		}
-		
-		if(!finalImage.empty()) cv::imshow("source", finalImage);
 
 		// Total execution time
 		std::printf( "Total execution time = %g ms\n", ((double)cv::getTickCount() - t)*1000/cv::getTickFrequency());
     }   
 
 	cv::destroyAllWindows();
-	pthread_exit(NULL);
 
     return 0;
 } 
@@ -192,16 +168,7 @@ void CloseWindows() {
 	if (cv::getWindowProperty("detectedFloor", cv::WND_PROP_AUTOSIZE) != -1) cv::destroyWindow("detectedFloor");
 }
 
-void *DisplayHistogram( void *threadarg ) {
-
-	struct thread_data *data;
-
-	data = (struct thread_data *) threadarg;
-
-	int height = data->height;
-	int width = data->width;
-	cv::Mat values = data->values;
-	double middlepoint = data->middlepoint;
+void DisplayHistogram( int height, int width, cv::Mat values, double middlepoint ) {
 	
 	// Creating a black MAT for histogram image to display
 	cv::Mat histogram( height, width, CV_8UC3, cv::Scalar( 0, 0, 0 ) );
@@ -226,10 +193,8 @@ void *DisplayHistogram( void *threadarg ) {
 	// Combine the histogram image with the source video 
 	cv::Mat result( height, width, CV_8UC3, cv::Scalar( 0, 255, 0 ) );
 	cv::Mat thefinal;
-	addWeighted( src, 1, histogram, 1, 0, finalImage );
+	addWeighted( src, 1, histogram, 1, 0, thefinal );
 
-	//cv::imshow("Source and Histogram", thefinal);
-	//cv::imshow("histogram", histogram);
-
-	pthread_exit(NULL);
+	cv::imshow("Source and Histogram", thefinal);
+	cv::imshow("histogram", histogram);
 }

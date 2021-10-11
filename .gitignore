@@ -33,3 +33,6 @@
 
 # Temp files
 *.swp
+
+# VScode files
+.vscode
