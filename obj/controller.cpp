@@ -52,14 +52,14 @@ void ControllerListener( Controller device, Motors motor ) {
 			int temp = 0;
 			int speed;
 
-			for (speed = 0; abs( axis ) >= temp; temp += divider, speed++);
+			for (speed = 1; abs( axis ) >= temp; temp += divider, speed++);
 			
 
             if ( device.throttle ) {
-                speed = ( device.axes[device.axis].y >= 0 ) ? ( 50 + speed ) : ( 50 - speed );
+                speed = ( device.axes[device.axis].y > 0 ) ? ( 50 + speed ) : ( 50 - speed );
             }
             else {
-                speed = ( device.axes[device.axis].x >= 0 ) ? ( 50 + speed ) : ( 50 - speed );
+                speed = ( device.axes[device.axis].x > 0 ) ? ( 50 + speed ) : ( 50 - speed );
             }
 
             std::cout << speed << std::endl;
