@@ -1,8 +1,8 @@
 #pragma once
 
 #include <iostream>
-#include "MotorDriver.h"
-#include "DEV_Config.h"
+#include "MotorDriver.hpp"
+#include "DEV_Config.hpp"
 
 #define SERVO_BASE_ANGLE 75 // Base 90 degree angle for servo to drive straight
 #define SERVO_MAX_ANGLE 90 // Limit servo maximum turning angle

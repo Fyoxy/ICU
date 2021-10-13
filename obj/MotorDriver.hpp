@@ -1,5 +1,5 @@
 /*****************************************************************************
-* | File        :   MotorDriver.h
+* | File        :   MotorDriver.hpp
 * | Author      :   Waveshare team
 * | Function    :   Drive TB6612FNG
 * | Info        :
@@ -16,8 +16,8 @@
 #ifndef __TB6612FNG_
 #define __TB6612FNG_
 
-#include "DEV_Config.h"
-#include "PCA9685.h"
+#include "DEV_Config.hpp"
+#include "PCA9685.hpp"
 
 //GPIO config
 #define PWMA        PCA_CHANNEL_0

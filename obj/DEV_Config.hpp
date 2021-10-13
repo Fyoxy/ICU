@@ -1,5 +1,5 @@
 /*****************************************************************************
-* | File        :   DEV_Config.h
+* | File        :   DEV_Config.hpp
 * | Author      :   Waveshare team
 * | Function    :   Hardware underlying interface
 * | Info        :

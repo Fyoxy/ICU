@@ -11,8 +11,8 @@
 * | Info        :   Basic version
 *
 ******************************************************************************/
-#include "DEV_Config.h"
-#include "Debug.h"  //DEBUG()
+#include "DEV_Config.hpp"
+#include "Debug.hpp"  //DEBUG()
 
 #include <wiringPi.h>
 #include <wiringPiI2C.h>

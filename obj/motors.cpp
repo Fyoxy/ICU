@@ -46,7 +46,7 @@ void Motors::MotorsInit() {
 	if(DEV_ModuleInit())
         exit(0);
 
-	// Call rpi driver function in MotorDriver.h
+	// Call rpi driver function in MotorDriver.hpp
 	Motor_Init();
 
 	// Initialize servo

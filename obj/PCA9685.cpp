@@ -12,8 +12,8 @@
 * | Info        :   Basic version
 *
 ******************************************************************************/
-#include "PCA9685.h"
-#include "Debug.h"  //DEBUG()
+#include "PCA9685.hpp"
+#include "Debug.hpp"  //DEBUG()
 #include <math.h>   //floor()
 #include <stdio.h>
 

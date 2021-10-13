@@ -8,7 +8,7 @@ int main() {
 
 	Motors motors;
 	std::cout << "Motors init" << std::endl;
-	//motors.MotorsInit();
+	motors.MotorsInit();
 
 	Controller device;
 	std::cout << "Controller init" << std::endl;

@@ -50,8 +50,6 @@ void ControllerListener( Controller device, Motors motor ) {
 			
 			// Split CONTROLLER_AXIS_MAX into 50 segments for negative and positive values
 			int divider = CONTROLLER_AXIS_MAX / 50;
-			int temp = 0;
-
             int speed = ( int ) abs( axis ) / divider;
 			
             // Check check if throttle or anything else
@@ -79,7 +77,6 @@ void ControllerListener( Controller device, Motors motor ) {
 
                 // Split CONTROLLER_AXIS_MAX into 15 segments for negative and positive values
 			    int divider = CONTROLLER_AXIS_MAX / 15;
-                int temp = 0;
 
                 // Conversion loop to get angle up to 15
 			    int angle = ( int ) abs( axis ) / divider;

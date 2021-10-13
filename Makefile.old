@@ -1,0 +1,33 @@
+DIR_OBJ = ./obj
+DIR_BIN = ./bin
+
+OBJ_Cpp = $(wildcard ${DIR_OBJ}/*.cpp)
+OBJ_C = $(wildcard ${DIR_OBJ}/*.c)
+
+OBJ_Opp = $(patsubst %.cpp,${DIR_BIN}/%.o,$(notdir ${OBJ_Cpp}))
+OBJ_O = $(patsubst %.c,${DIR_BIN}/%.o,$(notdir ${OBJ_C}))
+
+TARGET = main
+#BIN_TARGET = ${DIR_BIN}/${TARGET}
+
+CPP = g++
+CC = gcc
+
+DEBUG = -g -O0 -Wall
+CFLAGS += $(DEBUG)
+
+LIB = -lwiringPi -lm -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_videoio -pthread
+
+
+${TARGET}:${OBJ_O} ${OBJ_Opp}
+	$(CC) $(CFLAGS) $(OBJ_O) -o $@ -I /usr/include/opencv4 $(LIB)
+
+${DIR_BIN}/%.o : $(DIR_OBJ)/%.cpp
+	$(CPP) $(CFLAGS) -c  $< -o $@ -I /usr/include/opencv4 $(LIB)
+
+${DIR_BIN}/%.o : $(DIR_OBJ)/%.c
+	$(CC) $(CFLAGS) -c  $< -o $@ -I /usr/include/opencv4 $(LIB)
+	
+clean :
+	rm $(DIR_BIN)/*.* 
+	rm $(TARGET) 

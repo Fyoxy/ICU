@@ -13,8 +13,8 @@
 * | Info        :   Basic version
 *
 ******************************************************************************/
-#include "MotorDriver.h"
-#include "Debug.h"
+#include "MotorDriver.hpp"
+#include "Debug.hpp"
 
 /**
  * Motor rotation.

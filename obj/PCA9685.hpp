@@ -14,7 +14,7 @@
 #ifndef __PCA9685_H_
 #define __PCA9685_H_
 
-#include "DEV_Config.h"
+#include "DEV_Config.hpp"
 
 //GPIO config
 #define SUBADR1             0x02
