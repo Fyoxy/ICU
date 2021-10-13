@@ -89,7 +89,7 @@ void ControllerListener( Controller device, Motors motor ) {
                     motor.SetAngle( SERVO_BASE_ANGLE + angle - 1 );
                 }  
                 else if ( device.axes[device.axis].x < 0 ) { 
-                    motor.SetAngle( SERVO_BASE_ANGLE - angle + 1 )
+                    motor.SetAngle( SERVO_BASE_ANGLE - angle + 1 );
                 }
             } 
         }
