@@ -35,7 +35,6 @@ void ControllerListener( Controller& device, Motors& motor ) {
                 break;
         }
 
-        std::cout << "IF statements" << std::endl;
         
         if ( !(device.throttle && device.reverse) ) {
             // Kill motors, no throttle or reverse pressed
