@@ -8,7 +8,7 @@ void Controller::InitController() {
 
 }
 
-void ControllerListener( Controller device, Motors motor ) {
+void ControllerListener( Controller& device, Motors& motor ) {
 
     // Create controller to listen for
     std::cout << "Controller listener started" << std::endl;

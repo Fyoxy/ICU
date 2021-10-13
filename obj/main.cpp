@@ -16,7 +16,7 @@ int main() {
 	
 	std::cout << "Starting controller thread" << std::endl;
 
-	std::thread controller( ControllerListener, std::ref( device ), std::ref( motors ) );
+	std::thread controller( ControllerListener, device , motors );
 
 	//motors.SetControlType( Motors::ControlController, motors );
 
