@@ -64,7 +64,7 @@ size_t get_axis_state(struct js_event *event, struct axis_state axes[3])
 
     return axis;
 }
-
+/*
 int main(int argc, char *argv[])
 {
     const char *device;
@@ -106,4 +106,4 @@ int main(int argc, char *argv[])
 
     close(js);
     return 0;
-}
+}*/
