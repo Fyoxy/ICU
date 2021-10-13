@@ -39,4 +39,4 @@ private:
     const char* m_device = "/dev/input/js0";
 };
 
-void ControllerListener( Controller& device, Motors& motor );
+void ControllerListener( Controller device, Motors motor );
