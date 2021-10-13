@@ -5,7 +5,7 @@ OBJ_C = $(wildcard ${DIR_OBJ}/*.cpp)
 
 OBJ_O = $(patsubst %.cpp,${DIR_BIN}/%.o,$(notdir ${OBJ_C}))
 
-TARGET = main
+TARGET = main.out
 #BIN_TARGET = ${DIR_BIN}/${TARGET}
 
 CC = g++
