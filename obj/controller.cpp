@@ -64,7 +64,7 @@ void ControllerListener( Controller device, Motors motor ) {
 
             std::cout << speed << std::endl;
 
-            //motor.SetSpeed( speed );
+            motor.SetSpeed( speed );
 
         }
 
