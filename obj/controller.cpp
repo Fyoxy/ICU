@@ -85,10 +85,10 @@ void ControllerListener( Controller device, Motors motor ) {
                 // Conversion loop to get angle up to 15
 			    for (angle = 0; abs( axis ) >= temp; temp += divider, angle++);
 
-                if ( device.axes[device.axis].x > 0 ) {
+                if ( device.axes[device.axis].x < 0 ) {
                     motor.SetAngle( SERVO_BASE_ANGLE + angle - 1 );
                 }  
-                else if ( device.axes[device.axis].x < 0 ) { 
+                else if ( device.axes[device.axis].x > 0 ) { 
                     motor.SetAngle( SERVO_BASE_ANGLE - angle + 1 );
                 }
             } 
