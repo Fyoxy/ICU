@@ -8,11 +8,19 @@
 
 #define SERVO_PIN 18 // BCM hardware PWM servo pin
 
+class Driving {
+public:
+	int y = 1;
+
+private:
+	int x = 5;
+};
+
 void Dilation( int, void* );
-void MyFilledCircle( cv::Mat img, cv::Point center );
-double VectorAvg( std::vector<int> const& v );
+void MyFilledCircle( cv::Mat& img, cv::Point center );
+static double VectorAvg( std::vector<int> const& v );
 void CloseWindows();
-void DisplayHistogram( int height, int width, cv::Mat values, double middlepoint );
+void DisplayHistogram( int height, int width, cv::Mat& values, double middlepoint );
 
 cv::Mat src;
 
@@ -49,6 +57,8 @@ cv::Mat ClaheEqualization(cv::Mat& source) {
 double t = 0;
 
 int main() {
+
+
 
 	// Define manual driving control
 	bool detect = true;
@@ -142,7 +152,7 @@ int main() {
     return 0;
 } 
 
-void MyFilledCircle( cv::Mat img, cv::Point center )
+void MyFilledCircle( cv::Mat& img, cv::Point center )
 {
 	/* Source image */
 	/* Center point */
@@ -157,7 +167,7 @@ void MyFilledCircle( cv::Mat img, cv::Point center )
     	cv::LINE_8 );
 }
 
-double VectorAvg(std::vector<int> const& v) {
+static double VectorAvg(std::vector<int> const& v) {
     return 1.0 * std::accumulate(v.begin(), v.end(), 0LL) / v.size();
 }
 
@@ -168,7 +178,7 @@ void CloseWindows() {
 	if (cv::getWindowProperty("detectedFloor", cv::WND_PROP_AUTOSIZE) != -1) cv::destroyWindow("detectedFloor");
 }
 
-void DisplayHistogram( int height, int width, cv::Mat values, double middlepoint ) {
+void DisplayHistogram( int height, int width, cv::Mat& values, double middlepoint ) {
 	
 	// Creating a black MAT for histogram image to display
 	cv::Mat histogram( height, width, CV_8UC3, cv::Scalar( 0, 0, 0 ) );
