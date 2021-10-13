@@ -38,7 +38,7 @@ void ControllerListener( Controller device, Motors motor ) {
         std::cout << "Throttle: " << device.throttle << std::endl;
         std::cout << "Reverse: " << device.reverse << std::endl;
 
-        if ( device.throttle && device.reverse ) {
+        if ( device.throttle & device.reverse ) {
             // Kill motors, no throttle or reverse pressed
             std::cout << "Kill motors" << std::endl;
         }
@@ -46,17 +46,13 @@ void ControllerListener( Controller device, Motors motor ) {
             std::cout << "Else" << std::endl;
             // Converting controller data to acceptable PWM range
 			int axis = device.axes[device.axis].y;
-
-            std::cout << "SegFault1" << std::endl;
 			
 			// Split CONTROLLER_AXIS_MAX into 50 segments for negative and positive values
 			int divider = CONTROLLER_AXIS_MAX / 50;
 			int temp = 0;
 			int speed;
-            std::cout << "SegFault2" << std::endl;
 
-			for (speed = 1; abs( axis ) >= temp; temp += divider, speed++);
-            std::cout << "SegFault3" << std::endl;
+			for (speed = 1; abs( axis ) >= temp; temp += divider, ++speed);
 
             std::cout << "Speed" << std::endl;
 			std::cout << speed << std::endl;
