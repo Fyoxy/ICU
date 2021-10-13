@@ -4,6 +4,8 @@
 
 int main() {
 
+	std::cout << "Starting main" << std::endl;
+
 	Motors motors;
 	std::cout << "Motors init" << std::endl;
 	motors.MotorsInit();
