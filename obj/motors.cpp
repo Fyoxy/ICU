@@ -40,6 +40,9 @@ void Motors::SetAngle ( int angle, int multiplier ) {
 /* Intialize rpi motors */
 void Motors::MotorsInit() {
 
+	if(DEV_ModuleInit())
+        exit(0);
+
 	// Call rpi driver function in MotorDriver.h
 	Motor_Init();
 
