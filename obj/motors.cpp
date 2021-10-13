@@ -35,6 +35,9 @@ void Motors::SetAngle ( int angle, int multiplier ) {
 
 	if (angle > SERVO_MAX_ANGLE) m_angle = SERVO_MAX_ANGLE;
 	else if (angle < SERVO_MIN_ANGLE) m_angle = SERVO_MIN_ANGLE;
+	else m_angle = angle;
+
+	pwmWrite( SERVO_PIN, m_angle );
 }
 
 /* Intialize rpi motors */
