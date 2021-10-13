@@ -11,7 +11,7 @@ void Controller::InitController() {
 void ControllerListener( Controller& device, Motors& motor ) {
 
     // Create controller to listen for
-
+    std::cout << "Controller listener started" << std::endl;
     while ( read_event( device.controller, &device.event ) == 0 ) {
 
         switch (device.event.type)
@@ -34,6 +34,8 @@ void ControllerListener( Controller& device, Motors& motor ) {
                 /* Ignore init events. */
                 break;
         }
+
+        std::cout << "IF statements" << std::endl;
         
         if ( !(device.Throttle && device.Reverse) ) {
             // Kill motors, no throttle or reverse pressed
