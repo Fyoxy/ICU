@@ -37,7 +37,7 @@ void ControllerListener( Controller& device, Motors& motor ) {
 
         std::cout << "IF statements" << std::endl;
         
-        if ( !(device.Throttle && device.Reverse) ) {
+        if ( !(device.throttle && device.reverse) ) {
             // Kill motors, no throttle or reverse pressed
             std::cout << "Kill motors" << std::endl;
         }
@@ -54,6 +54,9 @@ void ControllerListener( Controller& device, Motors& motor ) {
 
 			std::cout << speed << std::endl;
         }
+
+        std::cout << "Flushing" << std::endl;
+
 
         fflush(stdout);
     }
