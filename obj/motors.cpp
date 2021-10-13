@@ -37,6 +37,8 @@ void Motors::SetAngle ( int angle, int multiplier ) {
 	else if (angle < SERVO_MIN_ANGLE) m_angle = SERVO_MIN_ANGLE;
 	else m_angle = angle;
 
+	std::cout << angle << std::endl;
+
 	pwmWrite( SERVO_PIN, m_angle );
 }
 
