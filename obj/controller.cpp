@@ -39,7 +39,7 @@ void ControllerListener( Controller& device, Motors& motor ) {
         
         if ( !(device.throttle && device.reverse) ) {
             // Kill motors, no throttle or reverse pressed
-            std::cout << "Kill motors" << std::endl;
+            //std::cout << "Kill motors" << std::endl;
         }
         else {
             // Converting controller data to acceptable PWM range
@@ -52,10 +52,11 @@ void ControllerListener( Controller& device, Motors& motor ) {
 
 			for (speed = 1; abs( axis ) >= temp; temp += divider, speed++);
 
+            std::cout << "Speed" << std::endl;
 			std::cout << speed << std::endl;
         }
 
-        std::cout << "Flushing" << std::endl;
+        //std::cout << "Flushing" << std::endl;
 
 
         fflush(stdout);
