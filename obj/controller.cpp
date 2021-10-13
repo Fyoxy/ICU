@@ -86,12 +86,10 @@ void ControllerListener( Controller device, Motors motor ) {
 			    for (angle = 0; abs( axis ) >= temp; temp += divider, angle++);
 
                 if ( device.axes[device.axis].x > 0 ) {
-                    std::cout << ( SERVO_BASE_ANGLE + angle ) << std::endl;
-                    // motor.SetAngle( SERVO_BASE_ANGLE + angle );
+                    motor.SetAngle( SERVO_BASE_ANGLE + angle - 1 );
                 }  
                 else if ( device.axes[device.axis].x < 0 ) { 
-                    std::cout << ( SERVO_BASE_ANGLE - angle ) << std::endl;
-                    // motor.SetAngle( SERVO_BASE_ANGLE - angle )
+                    motor.SetAngle( SERVO_BASE_ANGLE - angle + 1 )
                 }
             } 
         }
