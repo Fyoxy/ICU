@@ -15,7 +15,7 @@ void Motors::SetSpeed( int speed ) {
 
 	}
 
-	MotorsPWMControl(speed);
+	MotorsPWMControl( speed );
 }
 
 /* Set the motor control type */
@@ -75,36 +75,6 @@ void Motors::MotorsPWMControl( int speed ) {
 	}
 	
 }
-
-void Motors::SmoothPWMControl ( int speed ) {
-
-}/*
-
-	void ControllerInput( Controller device ) {
-		if ( device.controller == -1 ) {
-			std::cout << "No controller initialized!" << std::endl;
-		}
-
-
-
-		// When throttle (btn 7) button pressed start motors and set speed accordingly
-		// When throttle released stop motors, but do not break
-
-		// When reversse btn 6 pressed start motors backwards and set speed accordingly
-		// Same with the realease
-
-		if ( device.throttle ) {
-
-		}
-		else if ( device.reverse ) {
-
-		}
-		// None of button pressed then turn off motors
-		else  {
-
-		}
-	}
-*/
 
 /*
 

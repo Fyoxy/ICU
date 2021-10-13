@@ -34,7 +34,4 @@ private:
 	int m_angle = SERVO_BASE_ANGLE;
 
 	void MotorsPWMControl( int speed );
-
-	void SmoothPWMControl( int speed );
-	//void ControllerInput( Controller device );
 };
