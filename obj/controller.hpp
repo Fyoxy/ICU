@@ -33,7 +33,7 @@ public:
     bool throttle = false;
     bool reverse = false;
 
-    void InitController();
+    void ControllerInit();
     
 private:
     const char* m_device = "/dev/input/js0";

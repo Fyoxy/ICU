@@ -1,6 +1,6 @@
 #include "controller.hpp"
 
-void Controller::InitController() {
+void Controller::ControllerInit() {
     controller = open(m_device, O_RDONLY);
 
     if (controller == -1)
@@ -51,20 +51,18 @@ void ControllerListener( Controller device, Motors motor ) {
 			// Split CONTROLLER_AXIS_MAX into 50 segments for negative and positive values
 			int divider = CONTROLLER_AXIS_MAX / 50;
 			int temp = 0;
-			int speed;
 
-            // Conversion loop to get speed up to 50
-			for (speed = 0; abs( axis ) >= temp; temp += divider, speed++);
+            int speed = ( int ) abs( axis ) / divider;
 			
             // Check check if throttle or anything else
             if ( device.throttle ) {
                 // Check if axis was negative or positive to determine speed segment 1 - 50 or 51 - 100
-                speed = ( device.axes[device.axis].y > 0 ) ? ( 49 + speed ) : ( 51 - speed );
+                speed = ( device.axes[device.axis].y > 0 ) ? ( 50 + speed ) : ( 51 - speed );
                 motor.SetSpeed( speed );
             }
             else {
                 // Same process for reverse
-                speed = ( device.axes[device.axis].x > 0 ) ? ( 49 + speed ) : ( 51 - speed );
+                speed = ( device.axes[device.axis].x > 0 ) ? ( 50 + speed ) : ( 51 - speed );
                 // Invert speed to reverse
                 motor.SetSpeed( -speed );
             }
@@ -72,7 +70,9 @@ void ControllerListener( Controller device, Motors motor ) {
         
         // If steering with left thumbstick
         if ( device.axis == 0 ) {
-            if ( device.axes[device.axis].x == 0 ) motor.SetAngle( SERVO_BASE_ANGLE );
+            if ( device.axes[device.axis].x == 0 ) {
+                motor.SetAngle( SERVO_BASE_ANGLE );
+            } 
             else {
                 // Converting controller data to acceptable PWM range
                 int axis = device.axes[device.axis].x;
@@ -80,10 +80,9 @@ void ControllerListener( Controller device, Motors motor ) {
                 // Split CONTROLLER_AXIS_MAX into 15 segments for negative and positive values
 			    int divider = CONTROLLER_AXIS_MAX / 15;
                 int temp = 0;
-			    int angle;
 
                 // Conversion loop to get angle up to 15
-			    for (angle = 0; abs( axis ) >= temp; temp += divider, angle++);
+			    int angle = ( int ) abs( axis ) / divider;
 
                 if ( device.axes[device.axis].x < 0 ) {
                     motor.SetAngle( SERVO_BASE_ANGLE + angle - 1 );
