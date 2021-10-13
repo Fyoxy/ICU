@@ -40,25 +40,27 @@ void ControllerListener( Controller device, Motors motor ) {
 
         if ( ( !device.throttle && !device.reverse ) ) {
             // Kill motors, no throttle or reverse pressed
-            std::cout << "Kill motors" << std::endl;
+            motor.SetSpeed( 0 );
         }
         else {
-            std::cout << "Else" << std::endl;
             // Converting controller data to acceptable PWM range
-			int axis = device.axes[device.axis].y;
+            int axis = ( device.throttle ) ? device.axes[device.axis].y : device.axes[device.axis].x;
+
 			
 			// Split CONTROLLER_AXIS_MAX into 50 segments for negative and positive values
 			int divider = CONTROLLER_AXIS_MAX / 50;
 			int temp = 0;
 			int speed;
 
-			for (speed = 1; abs( axis ) >= temp; temp += divider, ++speed);
+			for (speed = 0; abs( axis ) >= temp; temp += divider, speed++);
+			
 
-            std::cout << "Speed" << std::endl;
-			std::cout << speed << std::endl;
+            speed = ( device.axes[device.axis].y || device.axes[device.axis].x ) ? ( 50 + speed ) : ( 50 - speed );
+            std::cout << speed << std::endl;
+
+            //motor.SetSpeed( speed );
+
         }
-
-        //std::cout << "Flushing" << std::endl;
 
 
         fflush(stdout);

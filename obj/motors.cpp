@@ -67,8 +67,8 @@ void Motors::MotorsPWMControl( int speed ) {
 		Motor_Run(MOTORA, BACKWARD, -speed);
 	}
 	else {
-		Motor_Run(MOTORB, FORWARD, 0);
-		Motor_Run(MOTORA, FORWARD, 0);
+		Motor_Stop(MOTORB);
+		Motor_Stop(MOTORA);
 	}
 	
 }
