@@ -55,7 +55,13 @@ void ControllerListener( Controller device, Motors motor ) {
 			for (speed = 0; abs( axis ) >= temp; temp += divider, speed++);
 			
 
-            speed = ( device.axes[device.axis].y || device.axes[device.axis].x ) ? ( 50 + speed ) : ( 50 - speed );
+            if ( device.throttle ) {
+                speed = ( device.axes[device.axis].y ) ? ( 50 + speed ) : ( 50 - speed );
+            }
+            else {
+                speed = ( device.axes[device.axis].x ) ? ( 50 + speed ) : ( 50 - speed );
+            }
+
             std::cout << speed << std::endl;
 
             //motor.SetSpeed( speed );
