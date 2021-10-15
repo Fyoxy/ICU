@@ -43,7 +43,7 @@ void Motors::SetAngle ( int angle, int multiplier ) {
 }
 
 /* Intialize rpi motors */
-void Motors::MotorsInit() {
+Motors::Motors() {
 
 	if(DEV_ModuleInit())
         exit(0);
@@ -57,6 +57,17 @@ void Motors::MotorsInit() {
 	pwmSetMode(PWM_MODE_MS);
 	pwmSetRange(2000);
 	pwmSetClock(192);
+}
+
+Motors::~Motors() {
+	// Close servo
+	pinMode(SERVO_PIN, INPUT);
+	pullUpDnControl(SERVO_PIN, PUD_DOWN);
+
+	// Close motors
+	Motor_Stop(MOTORA);
+    Motor_Stop(MOTORB);
+    DEV_ModuleExit();
 }
 
 void Motors::MotorsPWMControl( int speed ) {
