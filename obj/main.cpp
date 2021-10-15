@@ -5,14 +5,11 @@
 int main() {
 
 	std::cout << "Starting main" << std::endl;
-
-	Motors motors;
 	std::cout << "Motors init" << std::endl;
-	motors.MotorsInit();
-
-	Controller device;
+	Motors motors;
+	
 	std::cout << "Controller init" << std::endl;
-	device.ControllerInit();
+	Controller device;
 	
 	std::cout << "Starting controller thread" << std::endl;
 

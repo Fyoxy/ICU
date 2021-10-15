@@ -1,11 +1,15 @@
 #include "controller.hpp"
 
-void Controller::ControllerInit() {
+Controller::Controller() {
     controller = open(m_device, O_RDONLY);
 
     if (controller == -1)
         perror("Could not open controller");
 
+}
+
+Controller::~Controller() {
+    close(Controller::controller);
 }
 
 void ControllerListener( Controller device, Motors motor ) {

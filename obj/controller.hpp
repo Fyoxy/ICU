@@ -9,6 +9,9 @@
 class Controller {
 
 public:
+    Controller();
+    ~Controller();
+
     enum ButtonType {
         X = 0, 
         O, 
