@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <softPwm.h>
 #include "MotorDriver.hpp"
 #include "DEV_Config.hpp"
 

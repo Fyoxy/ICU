@@ -39,7 +39,7 @@ void Motors::SetAngle ( int angle, int multiplier ) {
 
 	std::cout << angle << std::endl;
 
-	pwmWrite( SERVO_PIN, angle );
+	pwmWrite( SERVO_PIN, m_angle );
 }
 
 /* Intialize rpi motors */
@@ -52,16 +52,20 @@ void Motors::MotorsInit() {
 	Motor_Init();
 
 	// Initialize servo
-	pullUpDnControl(SERVO_PIN, PUD_OFF);
+	/*pullUpDnControl(SERVO_PIN, PUD_OFF);
 	pinMode(SERVO_PIN, PWM_OUTPUT);
 	pwmSetMode(PWM_MODE_MS);
 	pwmSetRange(2000);
-	pwmSetClock(192);
+	pwmSetClock(192);*/
+	pinMode(SERVO_PIN, OUTPUT);
+	digitalWrite(SERVO_PIN, LOW);
+	softPwmCreate(SERVO_PIN, 0, 200);
+	softPwmWrite(SERVO_PIN, 15);
 }
 /*
 Motors::~Motors() {
 	// Close servo
-	
+	/*
 	pinMode(SERVO_PIN, INPUT);
 	pullUpDnControl(SERVO_PIN, PUD_DOWN);
 
