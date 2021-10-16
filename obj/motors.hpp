@@ -1,13 +1,13 @@
 #pragma once
 
 #include <iostream>
-#include <softPwm.h>
+#include <pigpio.h>
 #include "MotorDriver.hpp"
 #include "DEV_Config.hpp"
 
-#define SERVO_BASE_ANGLE 75 // Base 90 degree angle for servo to drive straight
-#define SERVO_MAX_ANGLE 90 // Limit servo maximum turning angle
-#define SERVO_MIN_ANGLE 60 // Limit servo minimum turning angle
+#define SERVO_BASE_ANGLE 1500 // Base 90 degree angle for servo to drive straight
+#define SERVO_MAX_ANGLE 1700 // Limit servo maximum turning angle
+#define SERVO_MIN_ANGLE 1300 // Limit servo minimum turning angle
 #define SERVO_PIN 18 // BCM hardware PWM servo pin
 
 class Motors {

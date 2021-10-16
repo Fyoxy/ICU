@@ -52,15 +52,9 @@ void Motors::MotorsInit() {
 	Motor_Init();
 
 	// Initialize servo
-	/*pullUpDnControl(SERVO_PIN, PUD_OFF);
-	pinMode(SERVO_PIN, PWM_OUTPUT);
-	pwmSetMode(PWM_MODE_MS);
-	pwmSetRange(2000);
-	pwmSetClock(192);*/
-	pinMode(SERVO_PIN, OUTPUT);
-	digitalWrite(SERVO_PIN, LOW);
-	softPwmCreate(SERVO_PIN, 0, 200);
-	softPwmWrite(SERVO_PIN, 15);
+	if (gpioInitialise() < 0) return -1;
+	gpioSetSignalFunc(SIGINT, stop);
+
 }
 /*
 Motors::~Motors() {

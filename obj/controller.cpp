@@ -91,10 +91,10 @@ void ControllerListener( Controller device, Motors motor ) {
                 // Converting controller data to acceptable PWM range
                 int axis = device.axes[device.axis].x;
 
-                // Split CONTROLLER_AXIS_MAX into 15 segments for negative and positive values
-			    int divider = CONTROLLER_AXIS_MAX / 15;
+                // Split CONTROLLER_AXIS_MAX into 200 segments for negative and positive values
+			    int divider = CONTROLLER_AXIS_MAX / 200;
 
-                // Conversion loop to get angle up to 15
+                // Conversion loop to get angle up to 200
 			    int angle = ( int ) abs( axis ) / divider;
 
                 if ( device.axes[device.axis].x < 0 ) {
