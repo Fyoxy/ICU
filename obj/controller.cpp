@@ -46,6 +46,7 @@ void ControllerListener( Controller device, Motors motor ) {
         // If input throttle or reverse
         if ( ( !device.throttle && !device.reverse ) ) {
             // Kill motors, no throttle or reverse pressed
+            std::cout << "Stopped motors" << std::endl;
             motor.SetSpeed( 0 );
         }
         else {
@@ -60,12 +61,14 @@ void ControllerListener( Controller device, Motors motor ) {
             if ( device.throttle ) {
                 // Check if axis was negative or positive to determine speed segment 1 - 50 or 51 - 100
                 speed = ( device.axes[device.axis].y > 0 ) ? ( 50 + speed ) : ( 51 - speed );
+                std::cout << "Speed + motors" << std::endl;
                 motor.SetSpeed( speed );
             }
             else {
                 // Same process for reverse
                 speed = ( device.axes[device.axis].x > 0 ) ? ( 50 + speed ) : ( 51 - speed );
                 // Invert speed to reverse
+                std::cout << "Speed - motors" << std::endl;
                 motor.SetSpeed( -speed );
             }
         }
@@ -73,6 +76,7 @@ void ControllerListener( Controller device, Motors motor ) {
         // If steering with left thumbstick
         if ( device.axis == 0 ) {
             if ( device.axes[device.axis].x == 0 ) {
+                std::cout << "Angle base" << std::endl;
                 motor.SetAngle( SERVO_BASE_ANGLE );
             } 
             else {
