@@ -102,6 +102,8 @@ void ControllerListener( Controller device, Motors motor ) {
         fflush(stdout);
     }
 
+    std::cout << "Closing controller" << std::endl;
+
     close(device.controller);
 }
 /*
