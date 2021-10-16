@@ -42,7 +42,7 @@ void ControllerListener( Controller device, Motors motor ) {
                     printf("Axis %zu at (%6d, %6d)\n", 
                            device.axis, device.axes[device.axis].x, device.axes[device.axis].y);*/
                 break;
-            default:
+            //default:
                 /* Ignore init events. */
                 //break;
         }
