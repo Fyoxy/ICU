@@ -6,12 +6,12 @@ void Motors::SetSpeed( int speed ) {
 	if ( speed > 100 ) {
 		std::cout << "Speed limit is -100 to 100" << std::endl;
 		std::cout << "Setting speed to 100" << std::endl;
-		speed = 100;
+		speed = speed;
 	} 
 	else if ( speed < -100 ) {
 		std::cout << "Speed limit is -100 to 100" << std::endl;
 		std::cout << "Setting speed to -100" << std::endl;
-		speed = -100;
+		speed = -speed;
 
 	}
 
