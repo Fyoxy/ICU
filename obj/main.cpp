@@ -19,7 +19,7 @@ int main() {
 
 	std::cout << "Starting loop" << std::endl;
 
-	for(;;);
+	controller.join();
 	/*
 	initialize motors
 	run motor inits

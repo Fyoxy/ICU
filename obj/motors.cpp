@@ -61,18 +61,17 @@ Motors::Motors() {
 
 Motors::~Motors() {
 	// Close servo
+	/*
 	pinMode(SERVO_PIN, INPUT);
 	pullUpDnControl(SERVO_PIN, PUD_DOWN);
 
 	// Close motors
 	Motor_Stop(MOTORA);
     Motor_Stop(MOTORB);
-    DEV_ModuleExit();
+    DEV_ModuleExit();*/
 }
 
 void Motors::MotorsPWMControl( int speed ) {
-
-	std::cout << "Speed set to >>> " << speed << std::endl;
 
 	// In case of speed is positive go forward
 	if (speed > 0) {
