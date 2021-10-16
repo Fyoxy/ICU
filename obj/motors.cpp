@@ -72,6 +72,8 @@ Motors::~Motors() {
 
 void Motors::MotorsPWMControl( int speed ) {
 
+	std::cout << "Speed set to >>> " << speed << std::endl;
+
 	// In case of speed is positive go forward
 	if (speed > 0) {
 		Motor_Run(MOTORB, FORWARD, speed);
