@@ -52,8 +52,8 @@ void Motors::MotorsInit() {
 	Motor_Init();
 
 	// Initialize servo
-	if (gpioInitialise() < 0) return -1;
-	gpioSetSignalFunc(SIGINT, stop);
+	if (gpioInitialise() < 0) exit(0);
+	//gpioSetSignalFunc(SIGINT, stop);
 
 }
 /*

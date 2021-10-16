@@ -13,7 +13,7 @@ CC = g++
 DEBUG = -g -O0 -Wall
 CFLAGS += $(DEBUG)
 
-LIB = -lwiringPi -lm -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_videoio -pthread
+LIB = -lwiringPi -lm -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_videoio -pthread -lpigpio
 
 
 ${TARGET}:${OBJ_O} ${OBJ_Opp}
