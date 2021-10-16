@@ -1,7 +1,10 @@
 #include "controller.hpp"
 
 Controller::Controller() {
+    std::cout << "dvice opened" << std::endl;
     controller = open(m_device, O_RDONLY);
+
+    std::cout << controller << std::endl;
 
     if (controller == -1)
         perror("Could not open controller");
