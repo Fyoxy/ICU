@@ -39,7 +39,7 @@ void Motors::SetAngle ( int angle, int multiplier ) {
 
 	std::cout << angle << std::endl;
 
-	pwmWrite( SERVO_PIN, m_angle );
+	pwmWrite( SERVO_PIN, angle );
 }
 
 /* Intialize rpi motors */
