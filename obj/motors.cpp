@@ -43,7 +43,7 @@ void Motors::SetAngle ( int angle, int multiplier ) {
 }
 
 /* Intialize rpi motors */
-Motors::Motors() {
+void Motors::MotorsInit() {
 
 	if(DEV_ModuleInit())
         exit(0);

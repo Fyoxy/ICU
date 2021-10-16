@@ -7,6 +7,8 @@ int main() {
 	std::cout << "Starting main" << std::endl;
 	std::cout << "Motors init" << std::endl;
 	Motors motors;
+
+	motors.MotorsInit();
 	
 	std::cout << "Controller init" << std::endl;
 	Controller device;
