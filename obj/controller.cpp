@@ -103,7 +103,7 @@ void ControllerListener( Controller device, Motors motor ) {
     }
 
     std::cout << "Closing controller" << std::endl;
-    std::cout << read_event( device.controller, &device.event ) << std::endl;
+    std::cout << device.controller << "  ZZZ  " << &device.event << std::endl;
 
     close(device.controller);
 }
