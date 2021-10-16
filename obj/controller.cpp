@@ -17,7 +17,7 @@ void ControllerListener( Controller device, Motors motor ) {
     // Create controller to listen for
     std::cout << "Controller listener started" << std::endl;
     while ( read_event( device.controller, &device.event ) == 0 ) {
-
+        std::cout << device.event.type << std::endl;
         // Get controller input
         switch (device.event.type)
         {
