@@ -37,13 +37,11 @@ void Motors::SetAngle ( int angle, int multiplier ) {
 	else if (angle < SERVO_MIN_ANGLE) m_angle = SERVO_MIN_ANGLE;
 	else m_angle = angle;
 
-	std::cout << angle << std::endl;
-
 	gpioServo(SERVO_PIN, m_angle);
 }
 
 /* Intialize rpi motors */
-void Motors::MotorsInit() {
+Motors::Motors() {
 
 	if(DEV_ModuleInit())
         exit(0);
@@ -56,18 +54,18 @@ void Motors::MotorsInit() {
 	//gpioSetSignalFunc(SIGINT, stop);
 
 }
-/*
+
 Motors::~Motors() {
 	// Close servo
-	/*
-	pinMode(SERVO_PIN, INPUT);
-	pullUpDnControl(SERVO_PIN, PUD_DOWN);
+	gpioServo(SERVO_PIN, 0);
+	gpioTerminate();
 
 	// Close motors
 	Motor_Stop(MOTORA);
     Motor_Stop(MOTORB);
     DEV_ModuleExit();
-}*/
+	
+}
 
 void Motors::MotorsPWMControl( int speed ) {
 
