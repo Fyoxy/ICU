@@ -25,7 +25,7 @@
 void Motor_Init(void)
 {
     PCA9685_Init(0x40);
-    PCA9685_SetPWMFreq(500);
+    PCA9685_SetPWMFreq(1000);
 }
 
 /**
