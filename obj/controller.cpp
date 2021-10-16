@@ -54,7 +54,7 @@ void ControllerListener( Controller device, Motors motor ) {
             int axis = ( device.throttle ) ? device.axes[device.axis].y : device.axes[device.axis].x;
 			
 			// Split CONTROLLER_AXIS_MAX into 50 segments for negative and positive values
-			int divider = CONTROLLER_AXIS_MAX / 50;
+			int divider = CONTROLLER_AXIS_MAX / 80;
             int speed = ( int ) abs( axis ) / divider;
 			
             // Check check if throttle or anything else

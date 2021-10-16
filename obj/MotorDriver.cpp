@@ -43,7 +43,7 @@ void Motor_Init(void)
 void Motor_Run(UBYTE motor, DIR dir, UWORD speed)
 {
     if(speed > 100)
-        speed = 100;
+        speed = speed;
 
     if(motor == MOTORA) {
         DEBUG("Motor A Speed = %d\r\n", speed);
