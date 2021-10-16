@@ -10,6 +10,8 @@ int main() {
 	
 	std::cout << "Controller init" << std::endl;
 	Controller device;
+
+	device.ControllerInit();
 	
 	std::cout << "Starting controller thread" << std::endl;
 

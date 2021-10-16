@@ -1,6 +1,6 @@
 #include "controller.hpp"
 
-Controller::Controller() {
+void Controller::ControllerInit() {
     std::cout << "dvice opened" << std::endl;
     controller = open(m_device, O_RDONLY);
 
@@ -10,10 +10,10 @@ Controller::Controller() {
         perror("Could not open controller");
 
 }
-
+/*
 Controller::~Controller() {
     close(Controller::controller);
-}
+}*/
 
 void ControllerListener( Controller device, Motors motor ) {
 
