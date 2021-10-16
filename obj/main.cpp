@@ -6,9 +6,11 @@ int main() {
 
 	std::cout << "Motors init" << std::endl;
 	Motors motors;
+	motors.MotorsInit();
 	
 	std::cout << "Controller init" << std::endl;
 	Controller device;
+
 	device.ControllerInit();
 	
 	std::cout << "Starting controller thread" << std::endl;
@@ -17,7 +19,7 @@ int main() {
 
 	//motors.SetControlType( Motors::ControlController, motors );
 
-	std::cout << "Waiting for thread to finish" << std::endl;
+	std::cout << "Waiting for controller thread" << std::endl;
 
 	controller.join();
 	/*

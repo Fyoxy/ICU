@@ -15,7 +15,7 @@ class Motors {
 public:
 
 	// Declare motors constructor and deconstructor
-	Motors();
+	//Motors();
 	~Motors();
 	
 	enum ControlType : char {
