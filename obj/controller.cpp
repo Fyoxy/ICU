@@ -25,7 +25,7 @@ void ControllerListener( Controller device, Motors motor ) {
         std::cout << "If == 0" << std::endl;
     } else std::cout << "If not 0" << std::endl;
 
-    while ( read_event( device.controller, &device.event ) == 0 ) {
+    while ( read_event( device.controller, &device.event ) == -1 ) {
         std::cout << "while!!!" << std::endl;
         // Get controller input
         switch (device.event.type)
