@@ -54,7 +54,7 @@ void Motors::MotorsInit() {
 	//gpioSetSignalFunc(SIGINT, stop);
 
 }
-
+/*
 Motors::~Motors() {
 	// Close servo
 	gpioServo(SERVO_PIN, 0);
@@ -65,7 +65,7 @@ Motors::~Motors() {
     Motor_Stop(MOTORB);
     DEV_ModuleExit();
 	
-}
+}*/
 
 void Motors::MotorsPWMControl( int speed ) {
 
