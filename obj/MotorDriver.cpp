@@ -25,7 +25,7 @@
 void Motor_Init(void)
 {
     PCA9685_Init(0x40);
-    PCA9685_SetPWMFreq(100);
+    PCA9685_SetPWMFreq(500);
 }
 
 /**
@@ -43,7 +43,7 @@ void Motor_Init(void)
 void Motor_Run(UBYTE motor, DIR dir, UWORD speed)
 {
     if(speed > 100)
-        speed = speed;
+        speed = 100;
 
     if(motor == MOTORA) {
         DEBUG("Motor A Speed = %d\r\n", speed);
