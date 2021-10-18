@@ -17,7 +17,7 @@ int main() {
 
 	std::thread controller( ControllerListener, device , motors );
 
-	//motors.SetControlType( Motors::ControlController, motors );
+	motors.SetControlType( Motors::ControlController, motors );
 
 	std::cout << "Waiting for controller thread" << std::endl;
 
@@ -32,12 +32,6 @@ int main() {
 	-> thread opened for controller control
 
 	.. Send motor object to controller control
-
-	input is keyboard
-	-> waitkey
-
-	.. Send data to motor object
-
 
 	input is autonomous
 	-> open thread for motors

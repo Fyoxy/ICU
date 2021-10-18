@@ -18,7 +18,6 @@ void ControllerListener( Controller device, Motors motor ) {
     // Create controller to listen for
 
     while ( read_event( device.controller, &device.event ) == 0 ) {
-        std::cout << "while!!!" << std::endl;
         // Get controller input
         switch (device.event.type)
         {
@@ -54,6 +53,7 @@ void ControllerListener( Controller device, Motors motor ) {
             int axis = ( device.throttle ) ? device.axes[device.axis].y : device.axes[device.axis].x;
 			
 			// Split CONTROLLER_AXIS_MAX into 50 segments for negative and positive values
+            // DS4 Controller sends values from -32767 to 32767
 			int divider = CONTROLLER_AXIS_MAX / 50;
             int speed = ( int ) abs( axis ) / divider;
 			

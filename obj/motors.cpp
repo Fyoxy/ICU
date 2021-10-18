@@ -27,7 +27,7 @@ void Motors::SetControlType ( ControlType type, Motors motor ) {
 		
 	} 
 	else if (type == ControlAutomatic ) m_ControlType = ControlAutomatic;
-	else m_ControlType = ControlManual;
+	else m_ControlType = ControlAutomatic;
 }
 
 /* Sets the steering angle of the servo */
