@@ -26,7 +26,7 @@ void ControllerListener( Controller device, Motors motor ) {
                     std::thread detection( Detection, motor );
                 }
                 else if ( device.event.number == device.ButtonType::O ) {
-                    std::terminate( );
+                    //std::terminate( );
                 }
                 else if ( device.event.number == device.ButtonType::Throttle ) {
                     device.throttle = ( device.event.value ) ? true : false;
