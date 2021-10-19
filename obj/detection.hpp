@@ -7,4 +7,4 @@
 #include <vector>
 #include <numeric>
 
-void Detection( Motors motor );
+void Detection( Motors& motor );

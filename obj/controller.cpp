@@ -23,7 +23,7 @@ void ControllerListener( Controller device, Motors motor ) {
         {
             case JS_EVENT_BUTTON:
                 if ( device.event.number == device.ButtonType::T ) {
-                    std::thread detection( Detection, motor );
+                    std::thread detection( Detection, std::ref(motor) );
                 }
                 else if ( device.event.number == device.ButtonType::O ) {
                     std::terminate( );
