@@ -22,6 +22,8 @@ void Detection( Motors motor ) {
     // Set motor speed by default
     motor.SetSpeed( 80 );
 
+    cout << "Cap:: " << cap.isOpened() << endl;
+
 	while ( cap.isOpened() )
     {
 
