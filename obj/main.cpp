@@ -19,9 +19,11 @@ void ControllerListener( Controller* device, Motors* motor ) {
                 }*/
                 if ( device->event.number == device->ButtonType::Throttle ) {
                     device->throttle = ( device->event.value ) ? true : false;
+                    std::cout << "Throttle" << std::endl;
                 }
                 else if ( device->event.number == device->ButtonType::Reverse ) {
                     device->reverse = ( device->event.value ) ? true : false;
+                    std::cout << "Reverse" << std::endl;
                 }
                 break;
             case JS_EVENT_AXIS:
