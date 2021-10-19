@@ -1,13 +1,28 @@
 #include "controller.hpp"
 #include "motors.hpp"
+#include "test.cpp"
 #include <thread>
+#include <chrono>
+#include <iostream>
+
+void SetMotorz( Motors& motor ) {
+    std::cout << "SS func" << std::endl;
+    motor.SetAngle( SERVO_MAX_ANGLE );
+
+}
 
 int main() {
 
 	std::cout << "Motors init" << std::endl;
 	Motors motors;
 	motors.MotorsInit();
+
+	auto motorsT = std::thread( SetMotorz, std::ref(motors));
+
+	std::chrono::milliseconds(5000);
+	motors.SetAngle(SERVO_BASE_ANGLE);
 	
+	/*
 	std::cout << "Controller init" << std::endl;
 	Controller device;
 
@@ -21,7 +36,7 @@ int main() {
 
 	std::cout << "Waiting for controller thread" << std::endl;
 
-	controller.join();
+	controller.join();*/
 	/*
 	initialize motors
 	run motor inits
