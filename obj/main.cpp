@@ -4,9 +4,9 @@
 #include <chrono>
 #include <iostream>
 
-void SetMotorz( Motors& motor ) {
+void SetMotorz( Motors* motor ) {
     std::cout << "SS func" << std::endl;
-    motor.SetAngle( SERVO_MAX_ANGLE );
+    motor->SetAngle( SERVO_MAX_ANGLE );
 
 }
 
@@ -16,7 +16,9 @@ int main() {
 	Motors motors;
 	motors.MotorsInit();
 
-	auto motorsT = std::thread( SetMotorz, std::ref(motors));
+	auto motorsT = std::thread( SetMotorz, &motors );
+
+	motorsT.join();
 
 	std::chrono::milliseconds(5000);
 	motors.SetAngle(SERVO_BASE_ANGLE);
