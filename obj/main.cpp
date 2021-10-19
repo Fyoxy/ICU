@@ -16,12 +16,16 @@ int main() {
 	Motors motors;
 	motors.MotorsInit();
 
+	motors.SetAngle(SERVO_BASE_ANGLE);
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 	auto motorsT = std::thread( SetMotorz, &motors );
 
 	motorsT.join();
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 	motors.SetAngle(SERVO_BASE_ANGLE);
+	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 	
 	/*
 	std::cout << "Controller init" << std::endl;
