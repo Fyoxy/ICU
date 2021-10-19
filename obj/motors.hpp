@@ -15,8 +15,8 @@ class Motors {
 public:
 
 	// Declare motors constructor and deconstructor
-	//Motors();
-	//~Motors();
+	Motors();
+	~Motors();
 	
 	enum ControlType : char {
 		ControlAutomatic = 0, ControlController
@@ -31,7 +31,7 @@ public:
 	void SetAngle( int angle, int multiplier = 1 );
 
 	// Intialize rpi motorsS
-	void MotorsInit();
+	//void MotorsInit();
 
 private:
 

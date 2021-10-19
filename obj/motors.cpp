@@ -41,10 +41,10 @@ void Motors::SetAngle ( int angle, int multiplier ) {
 }
 
 /* Intialize rpi motors */
-void Motors::MotorsInit() {
+Motors::Motors() {
 
 	if(DEV_ModuleInit())
-        exit(0);
+    exit(0);
 
 	// Call rpi driver function in MotorDriver.hpp
 	Motor_Init();
@@ -54,7 +54,7 @@ void Motors::MotorsInit() {
 	//gpioSetSignalFunc(SIGINT, stop);
 
 }
-/*
+
 Motors::~Motors() {
 	// Close servo
 	gpioServo(SERVO_PIN, 0);
@@ -65,7 +65,7 @@ Motors::~Motors() {
     Motor_Stop(MOTORB);
     DEV_ModuleExit();
 	
-}*/
+}
 
 
 void Motors::MotorsPWMControl( int speed ) {

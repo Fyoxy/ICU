@@ -14,11 +14,7 @@ int main() {
 
 	std::cout << "Motors init" << std::endl;
 	Motors motors;
-	motors.MotorsInit();
 
-	motors.SetAngle(SERVO_BASE_ANGLE);
-
-	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 	auto motorsT = std::thread( SetMotorz, &motors );
 
 	motorsT.join();
