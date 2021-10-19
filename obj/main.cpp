@@ -46,6 +46,8 @@ void ControllerListener( Controller* device, Motors* motor ) {
         else {
             // Converting controller data to acceptable PWM range
             std::cout << "Axis" << std::endl;
+            std::cout << ( device->throttle ) << std::endl;
+            std::cout << "Axis2" << std::endl;
             int axis = ( device->throttle ) ? device->axes[device->axis].y : device->axes[device->axis].x;
 			
             std::cout << "Divider/speed" << std::endl;
