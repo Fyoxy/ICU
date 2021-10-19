@@ -1,6 +1,5 @@
 #include "controller.hpp"
 #include "motors.hpp"
-#include "test.cpp"
 #include <thread>
 #include <chrono>
 #include <iostream>
