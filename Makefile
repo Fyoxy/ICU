@@ -17,7 +17,7 @@ LIB = -lwiringPi -lm -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_vi
 
 
 ${TARGET}:${OBJ_O} ${OBJ_Opp}
-	$(CC) $(CFLAGS) $(OBJ_O) -o $@ -I /usr/include/opencv4 $(LIB)
+	$(CC) $(CFLAGS) $(OBJ_O) -o $@ -I /usr/local/include/opencv4 $(LIB)
 
 ${DIR_BIN}/%.o : $(DIR_OBJ)/%.cpp
 	$(CC) $(CFLAGS) -c  $< -o $@ -I /usr/include/opencv4 $(LIB)
