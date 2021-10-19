@@ -44,11 +44,12 @@ void ControllerListener( Controller* device, Motors* motor ) {
             motor->SetSpeed( 0 );
         }
         else {
+            device->axis = get_axis_state(&device->event, device->axes);
             // Converting controller data to acceptable PWM range
             std::cout << "Axis" << std::endl;
             std::cout << device->axes[device->axis].y << std::endl;
             std::cout << "Axis2" << std::endl;
-            int axis = ( device->throttle ) ? device->axes[device->axis].y : device->axes[device->axis].y;
+            int axis = ( device->throttle ) ? device->axes[device->axis].y : device->axes[device->axis].x;
 
             std::cout << "Divider/speed" << std::endl;
 			// Split CONTROLLER_AXIS_MAX into 50 segments for negative and positive values
