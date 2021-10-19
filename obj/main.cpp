@@ -11,13 +11,13 @@ void ControllerListener( Controller* device, Motors* motor ) {
         switch (device->event.type)
         {
             case JS_EVENT_BUTTON:
-                if ( device->event.number == device->ButtonType::T ) {
+                /*if ( device->event.number == device->ButtonType::T ) {
                     // auto detectionT = std::thread detection( Detection, motor );
                 }
                 else if ( device->event.number == device->ButtonType::O ) {
                     //std::terminate( );
-                }
-                else if ( device->event.number == device->ButtonType::Throttle ) {
+                }*/
+                if ( device->event.number == device->ButtonType::Throttle ) {
                     device->throttle = ( device->event.value ) ? true : false;
                 }
                 else if ( device->event.number == device->ButtonType::Reverse ) {
