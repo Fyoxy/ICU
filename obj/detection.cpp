@@ -13,14 +13,14 @@ void DisplayHistogram( int height, int width, Mat values, double middlepoint );
 
 Mat src;
 
-void Detection( Motors motor ) {
+void Detection( Motors* motor ) {
     // Define video capture
 	VideoCapture cap(0);
 
     double t = 0;
 
     // Set motor speed by default
-    motor.SetSpeed( 80 );
+    motor->SetSpeed( 80 );
 
     cout << "Cap:: " << cap.isOpened() << endl;
 
@@ -127,7 +127,7 @@ void Detection( Motors motor ) {
         //if (angle > 15) angle += 15;
         //else if (angle < -15) angle += -15;
 
-        //motor.SetAngle( curve )
+        //motor->SetAngle( curve )
 
 		// imshow("source", src);
 

@@ -1,5 +1,6 @@
 #include "controller.hpp"
 #include "motors.hpp"
+#include "detection.hpp"
 #include <thread>
 #include <chrono>
 #include <iostream>
@@ -11,12 +12,12 @@ void ControllerListener( Controller* device, Motors* motor ) {
         switch (device->event.type)
         {
             case JS_EVENT_BUTTON:
-                /*if ( device->event.number == device->ButtonType::T ) {
-                    // auto detectionT = std::thread detection( Detection, motor );
+                if ( device->event.number == device->ButtonType::T ) {
+                    auto detectionT = std::thread( Detection, motor );
                 }
                 else if ( device->event.number == device->ButtonType::O ) {
-                    //std::terminate( );
-                }*/
+                    break;// std::terminate( detectionT );
+                }
                 if ( device->event.number == device->ButtonType::Throttle ) {
                     device->throttle = ( device->event.value ) ? true : false;
                 }

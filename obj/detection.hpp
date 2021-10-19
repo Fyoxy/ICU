@@ -1,3 +1,5 @@
+#pragma once
+
 #include "opencv2/core.hpp"
 #include "opencv2/imgcodecs.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
@@ -7,4 +9,4 @@
 #include <vector>
 #include <numeric>
 
-void Detection( Motors motor );
+void Detection( Motors* motor );
