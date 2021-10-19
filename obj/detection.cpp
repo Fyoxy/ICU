@@ -19,10 +19,11 @@ void Detection( Motors motor ) {
 
     double t = 0;
 
+    // Set motor speed by default
+    motor.SetSpeed( 80 );
+
 	while ( cap.isOpened() )
     {
-        // Set motor speed by default
-        motor.SetSpeed( 80 );
 
 		// Send VideoCapture to src Mat
 		cap >> src;
