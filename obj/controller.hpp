@@ -11,9 +11,9 @@
 class Controller {
 
 public:
-/*
+
     Controller();
-    ~Controller();*/
+    ~Controller();
 
     enum ButtonType {
         X = 0, 
@@ -38,11 +38,7 @@ public:
 
     bool throttle = false;
     bool reverse = false;
-
-    void ControllerInit();
     
 private:
     const char* m_device = "/dev/input/js0";
 };
-
-void ControllerListener( Controller device, Motors motor );

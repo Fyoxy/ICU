@@ -15,7 +15,11 @@ class Motors {
 public:
 
 	// Declare motors constructor and deconstructor
+	
+	// Intialize rpi motors
 	Motors();
+
+	// De-intialize rpi motors
 	~Motors();
 	
 	enum ControlType : char {
@@ -29,9 +33,6 @@ public:
 
 	// Sets the steering angle of the servo
 	void SetAngle( int angle, int multiplier = 1 );
-
-	// Intialize rpi motorsS
-	//void MotorsInit();
 
 private:
 
