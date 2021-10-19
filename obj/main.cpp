@@ -44,20 +44,17 @@ void ControllerListener( Controller* device, Motors* motor ) {
             motor->SetSpeed( 0 );
         }
         else {
+            // Get axis state because otherwise it may get button pressed before axis.
             device->axis = get_axis_state(&device->event, device->axes);
+
             // Converting controller data to acceptable PWM range
-            std::cout << "Axis" << std::endl;
-            std::cout << device->axes[device->axis].y << std::endl;
-            std::cout << "Axis2" << std::endl;
             int axis = ( device->throttle ) ? device->axes[device->axis].y : device->axes[device->axis].x;
 
-            std::cout << "Divider/speed" << std::endl;
 			// Split CONTROLLER_AXIS_MAX into 50 segments for negative and positive values
             // DS4 Controller sends values from -32767 to 32767
 			int divider = CONTROLLER_AXIS_MAX / 50;
             int speed = ( int ) abs( axis ) / divider;
 			
-            std::cout << "SEtSpeed" << std::endl;
             // Check check if throttle or anything else
             if ( device->throttle ) {
                 // Check if axis was negative or positive to determine speed segment 1 - 50 or 51 - 100
