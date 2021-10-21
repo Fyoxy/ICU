@@ -11,10 +11,13 @@ void ManualDriving( Controller* device, Motors* motor ) {
     if ( ( !( device->event.number == device->ButtonType::Throttle ) &&
            !( device->event.number == device->ButtonType::Reverse ) ) ) {
 
+               std::cout << "Kill motors" << std::endl;
+
         // Kill motors, no throttle or reverse pressed
         motor->SetSpeed( 0 );
     }
     else {
+        std::cout << "Else motors" << std::endl;
         // Get axis state because otherwise it may get button pressed before axis
         device->axis = get_axis_state(&device->event, device->axes);
 
@@ -101,15 +104,15 @@ int main() {
                     break;
                 
                 case device.ButtonType::O :
-                    
-                    motors.SetControlType( Motors::Manual );
-                    // Wait for previous thread to close if already running
-                    if ( controlThread.joinable() ) controlThread.join();
+                    if ( device.event.value ) {
+                        motors.SetControlType( Motors::Manual );
+                        // Wait for previous thread to close if already running
+                        if ( controlThread.joinable() ) controlThread.join();
 
-                    std::cout << "Started manual thread" << std::endl;
-                    // Start Manual driving thread and give it motors to control and controller to get input
-                    controlThread = std::thread( ManualDriving, &device, &motors );
-
+                        std::cout << "Started manual thread" << std::endl;
+                        // Start Manual driving thread and give it motors to control and controller to get input
+                        controlThread = std::thread( ManualDriving, &device, &motors );
+                    }
                     break;
 
                 default:
