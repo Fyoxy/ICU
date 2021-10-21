@@ -81,7 +81,9 @@ int main() {
 
             // If steering with left thumbstick
             if ( device.axis == 0 ) {
+                std::cout << "Servo control" << std::endl;
                 if ( device.axes[device.axis].x == 0 ) {
+                    std::cout << "Base" << std::endl;
                     motor.SetAngle( SERVO_BASE_ANGLE );
                 } 
                 else {
@@ -93,6 +95,8 @@ int main() {
 
                     // Conversion loop to get angle up to 200
                     int angle = ( int ) abs( axis ) / divider;
+
+                    std::cout << "Angle: " << angle << std::endl;
 
                     if ( device.axes[device.axis].x < 0 ) {
                         motor.SetAngle( SERVO_BASE_ANGLE + angle - 1 );
