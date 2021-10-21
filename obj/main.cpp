@@ -90,6 +90,7 @@ int main() {
             switch ( device.event.number ) {
 
                 case device.ButtonType::T :
+                    std::cout << "Setting to Automatic" << std::endl;
                     motors.SetControlType( Motors::Automatic );
                     // Wait for thread to close if already running
                     if ( controlThread.joinable() ) controlThread.join();
@@ -100,10 +101,12 @@ int main() {
                     break;
                 
                 case device.ButtonType::O :
+                    
                     motors.SetControlType( Motors::Manual );
                     // Wait for previous thread to close if already running
                     if ( controlThread.joinable() ) controlThread.join();
 
+                    std::cout << "Started manual thread" << std::endl;
                     // Start Manual driving thread and give it motors to control and controller to get input
                     controlThread = std::thread( ManualDriving, &device, &motors );
 
