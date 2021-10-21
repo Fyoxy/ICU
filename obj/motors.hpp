@@ -22,23 +22,21 @@ public:
 	// De-intialize rpi motors
 	~Motors();
 	
-	enum ControlType : bool {
-		Automatic = 0, Manual
+	enum ControlType : char {
+		ControlAutomatic = 0, ControlController
 	};
 
 	void SetSpeed( int speed );
 
 	// Set the motor control type
-	void SetControlType( ControlType );
+	void SetControlType( ControlType type, Motors motor );
 
 	// Sets the steering angle of the servo
 	void SetAngle( int angle, int multiplier = 1 );
 
-	int GetControlType();
-
 private:
 
-	ControlType m_ControlType = Manual; 
+	ControlType m_ControlType = ControlController; 
 
 	int m_angle = SERVO_BASE_ANGLE;
 

@@ -5,39 +5,57 @@
 #include <chrono>
 #include <iostream>
 
-void ManualDriving( Controller* device, Motors* motor ) {
+void ControllerListener( Controller* device, Motors* motor ) {
 
-    for (; motor->GetControlType() == Motors::Manual; ) {
+    while ( read_event( device->controller, &device->event ) == 0 ) {
+        // Get controller input
+        switch (device->event.type)
+        {
+            case JS_EVENT_BUTTON:
+                if ( device->event.number == device->ButtonType::T ) {
+                    auto detectionT = std::thread( Detection, motor );
+                }
+                else if ( device->event.number == device->ButtonType::O ) {
+                    break;// std::terminate( detectionT );
+                }
+                if ( device->event.number == device->ButtonType::Throttle ) {
+                    device->throttle = ( device->event.value ) ? true : false;
+                }
+                else if ( device->event.number == device->ButtonType::Reverse ) {
+                    device->reverse = ( device->event.value ) ? true : false;
+                }
+                break;
+            case JS_EVENT_AXIS:
+                device->axis = get_axis_state(&device->event, device->axes);
+                if ( device->axis ) {
+
+                }/*
+                if (device->axis < 3)
+                    printf("Axis %zu at (%6d, %6d)\n", 
+                           device->axis, device->axes[device->axis].x, device->axes[device->axis].y);*/
+                break;
+            default:
+                /* Ignore init events. */
+                break;
+        }
+
         // If input throttle or reverse
-        if ( device->event.number == device->ButtonType::Throttle ) {
-            device->throttle = ( device->event.value ) ? true : false;
-        }
-        else if ( device->event.number == device->ButtonType::Reverse ) {
-            device->reverse = ( device->event.value ) ? true : false;
-        }
-
-
         if ( ( !device->throttle && !device->reverse ) ) {
-
-            std::cout << "Kill motors" << std::endl;
-
             // Kill motors, no throttle or reverse pressed
             motor->SetSpeed( 0 );
         }
         else {
-            std::cout << "Else motors" << std::endl;
-            // Get axis state because otherwise it may get button pressed before axis
+            // Get axis state because otherwise it may get button pressed before axis.
             device->axis = get_axis_state(&device->event, device->axes);
 
             // Converting controller data to acceptable PWM range
-            int axis = ( device->event.number == device->ButtonType::Throttle ) ?
-                device->axes[device->axis].y : device->axes[device->axis].x;
+            int axis = ( device->throttle ) ? device->axes[device->axis].y : device->axes[device->axis].x;
 
-            // Split CONTROLLER_AXIS_MAX into 50 segments for negative and positive values
+			// Split CONTROLLER_AXIS_MAX into 50 segments for negative and positive values
             // DS4 Controller sends values from -32767 to 32767
-            int divider = CONTROLLER_AXIS_MAX / 50;
+			int divider = CONTROLLER_AXIS_MAX / 50;
             int speed = ( int ) abs( axis ) / divider;
-            
+			
             // Check check if throttle or anything else
             if ( device->throttle ) {
                 // Check if axis was negative or positive to determine speed segment 1 - 50 or 51 - 100
@@ -62,10 +80,10 @@ void ManualDriving( Controller* device, Motors* motor ) {
                 int axis = device->axes[device->axis].x;
 
                 // Split CONTROLLER_AXIS_MAX into 200 segments for negative and positive values
-                int divider = CONTROLLER_AXIS_MAX / 200;
+			    int divider = CONTROLLER_AXIS_MAX / 200;
 
                 // Conversion loop to get angle up to 200
-                int angle = ( int ) abs( axis ) / divider;
+			    int angle = ( int ) abs( axis ) / divider;
 
                 if ( device->axes[device->axis].x < 0 ) {
                     motor->SetAngle( SERVO_BASE_ANGLE + angle - 1 );
@@ -75,8 +93,12 @@ void ManualDriving( Controller* device, Motors* motor ) {
                 }
             } 
         }
-    }
         
+        
+        fflush(stdout);
+    }
+    
+    close(device->controller);
 }
 
 int main() {
@@ -86,59 +108,35 @@ int main() {
 	
 	std::cout << "Controller init" << std::endl;
 	Controller device;
-
-    // Initialize thread variable for manual and automatic control
-    std::thread controlThread;
 	
-	std::cout << "Starting controller listener" << std::endl;
+	std::cout << "Starting controller thread" << std::endl;
 
-    while ( read_event( device.controller, &device.event ) == 0 ) {
-        bool manual;
-        manual = motors.GetControlType() ? true : false;
-
-        // Get controller input
-        if (device.event.type == JS_EVENT_BUTTON ) {
-
-            switch ( device.event.number ) {
-
-                case device.ButtonType::T :
-                    std::cout << "Setting to Automatic" << std::endl;
-                    motors.SetControlType( Motors::Automatic );
-                    // Wait for thread to close if already running
-                    if ( controlThread.joinable() ) controlThread.join();
-
-                    // Start Autonomous driving thread and give it motors to control
-                    controlThread = std::thread( AutonomousDriving, &motors );
-
-                    break;
-                
-                case device.ButtonType::O :
-                    if ( device.event.value ) {
-                        motors.SetControlType( Motors::Manual );
-                        // Wait for previous thread to close if already running
-                        if ( controlThread.joinable() ) controlThread.join();
-
-                        std::cout << "Started manual thread" << std::endl;
-                        // Start Manual driving thread and give it motors to control and controller to get input
-                        controlThread = std::thread( ManualDriving, &device, &motors );
-                    }
-                    break;
-
-                default:
-                    break;
-
-            }
-            
-        }
-        
-        fflush(stdout);
-    }
-    
-    close(device.controller);
-
-
+    auto controllerT = std::thread( ControllerListener, &device, &motors );
 
 	// motors.SetControlType( Motors::ControlController, motors );ControllerListener
 
-	std::cout << "Program exit" << std::endl;
+	std::cout << "Waiting for controller thread" << std::endl;
+
+	controllerT.join();
+	
+	/*
+	initialize motors
+	run motor inits
+
+	create motor object
+
+	input is controller
+	-> thread opened for controller control
+
+	.. Send motor object to controller control
+
+	input is autonomous
+	-> open thread for motors
+
+	.. Send curve and speed to motors thread
+
+
+	process image
+	-> process image
+*/
 }

@@ -3,6 +3,7 @@
 #include "joystick.hpp"
 #include "motors.hpp"
 #include <iostream>
+#include <thread>
 #include "detection.hpp"
 
 #define CONTROLLER_AXIS_MAX 32767

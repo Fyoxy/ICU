@@ -19,14 +19,15 @@ void Motors::SetSpeed( int speed ) {
 }
 
 /* Set the motor control type */
-void Motors::SetControlType ( ControlType type ) {
+void Motors::SetControlType ( ControlType type, Motors motor ) {
 
-	if ( type == Automatic ) {
+	if ( type == ControlController ) {
 	
-		m_ControlType = Automatic;
+		m_ControlType = ControlController;
 		
 	} 
-	else m_ControlType = Manual;
+	else if (type == ControlAutomatic ) m_ControlType = ControlAutomatic;
+	else m_ControlType = ControlAutomatic;
 }
 
 /* Sets the steering angle of the servo */
@@ -84,10 +85,6 @@ void Motors::MotorsPWMControl( int speed ) {
 		Motor_Stop(MOTORA);
 	}
 	
-}
-
-int Motors::GetControlType() {
-		return (ControlType) Motors::m_ControlType;
 }
 
 /*

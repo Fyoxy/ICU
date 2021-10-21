@@ -13,7 +13,7 @@ void DisplayHistogram( int height, int width, Mat values, double middlepoint );
 
 Mat src;
 
-void AutonomousDriving( Motors* motor ) {
+void Detection( Motors* motor ) {
     // Define video capture
 	VideoCapture cap(0);
 
