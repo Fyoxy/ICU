@@ -9,10 +9,17 @@ void ManualDriving( Controller* device, Motors* motor ) {
 
     for (; motor->GetControlType() == Motors::Manual; ) {
         // If input throttle or reverse
-        if ( ( !( device->event.number == device->ButtonType::Throttle ) &&
-            !( device->event.number == device->ButtonType::Reverse ) ) ) {
+        if ( device->event.number == device->ButtonType::Throttle ) {
+            device->throttle = ( device->event.value ) ? true : false;
+        }
+        else if ( device->event.number == device->ButtonType::Reverse ) {
+            device->reverse = ( device->event.value ) ? true : false;
+        }
 
-                std::cout << "Kill motors" << std::endl;
+
+        if ( ( !device->throttle && !device->reverse ) ) {
+
+            std::cout << "Kill motors" << std::endl;
 
             // Kill motors, no throttle or reverse pressed
             motor->SetSpeed( 0 );
