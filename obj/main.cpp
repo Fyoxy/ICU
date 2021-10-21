@@ -47,29 +47,6 @@ int main() {
         }
 
         if ( motor.GetControlType() ) {
-            // If steering with left thumbstick
-            if ( device.axis == 0 ) {
-                if ( device.axes[device.axis].x == 0 ) {
-                    motor.SetAngle( SERVO_BASE_ANGLE );
-                } 
-                else {
-                    // Converting controller data to acceptable PWM range
-                    int axis = device.axes[device.axis].x;
-
-                    // Split CONTROLLER_AXIS_MAX into 200 segments for negative and positive values
-                    int divider = CONTROLLER_AXIS_MAX / 200;
-
-                    // Conversion loop to get angle up to 200
-                    int angle = ( int ) abs( axis ) / divider;
-
-                    if ( device.axes[device.axis].x < 0 ) {
-                        motor.SetAngle( SERVO_BASE_ANGLE + angle - 1 );
-                    }  
-                    else if ( device.axes[device.axis].x > 0 ) { 
-                        motor.SetAngle( SERVO_BASE_ANGLE - angle + 1 );
-                    }
-                } 
-            }
 
             // If input throttle or reverse
             if ( ( !device.throttle && !device.reverse ) ) {
@@ -100,6 +77,30 @@ int main() {
                     // Invert speed to reverse
                     motor.SetSpeed( -speed );
                 }
+            }
+
+            // If steering with left thumbstick
+            if ( device.axis == 0 ) {
+                if ( device.axes[device.axis].x == 0 ) {
+                    motor.SetAngle( SERVO_BASE_ANGLE );
+                } 
+                else {
+                    // Converting controller data to acceptable PWM range
+                    int axis = device.axes[device.axis].x;
+
+                    // Split CONTROLLER_AXIS_MAX into 200 segments for negative and positive values
+                    int divider = CONTROLLER_AXIS_MAX / 200;
+
+                    // Conversion loop to get angle up to 200
+                    int angle = ( int ) abs( axis ) / divider;
+
+                    if ( device.axes[device.axis].x < 0 ) {
+                        motor.SetAngle( SERVO_BASE_ANGLE + angle - 1 );
+                    }  
+                    else if ( device.axes[device.axis].x > 0 ) { 
+                        motor.SetAngle( SERVO_BASE_ANGLE - angle + 1 );
+                    }
+                } 
             }
         }
         
