@@ -9,4 +9,4 @@
 #include <vector>
 #include <numeric>
 
-void Detection( Motors* motor );
+void AutonomousDriving( Motors* motor );
