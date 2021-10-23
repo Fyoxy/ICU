@@ -24,7 +24,7 @@ void Detection( Motors* motor ) {
 
     cout << "Cap:: " << cap.isOpened() << endl;
 
-	while ( cap.isOpened() )
+	while ( cap.isOpened() && !motor->GetControlType() )
     {
 
 		// Send VideoCapture to src Mat
@@ -129,7 +129,7 @@ void Detection( Motors* motor ) {
 
         //motor->SetAngle( curve )
 
-		// imshow("source", src);
+		imshow("source", src);
 
 		// Total execution time
 		t = (double)getTickCount() - t;

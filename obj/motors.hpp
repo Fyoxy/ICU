@@ -29,7 +29,7 @@ public:
 	void SetSpeed( int speed );
 
 	// Set the motor control type
-	void SetControlType( ControlType type, Motors motor );
+	void SetControlType( ControlType type );
 
 	// Sets the steering angle of the servo
 	void SetAngle( int angle, int multiplier = 1 );

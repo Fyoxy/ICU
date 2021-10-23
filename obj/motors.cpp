@@ -19,7 +19,7 @@ void Motors::SetSpeed( int speed ) {
 }
 
 /* Set the motor control type */
-void Motors::SetControlType ( ControlType type, Motors motor ) {
+void Motors::SetControlType ( ControlType type ) {
 
 	if ( type == Automatic ) {
 	

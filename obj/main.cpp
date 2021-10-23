@@ -15,15 +15,20 @@ int main() {
 	
 	std::cout << "Starting controller listener" << std::endl;
     while ( read_event( device.controller, &device.event ) == 0 ) {
+
+        std::thread detectionT;
+
         // Get controller input
         switch (device.event.type)
         {
             case JS_EVENT_BUTTON:
                 if ( device.event.number == device.ButtonType::T ) {
-                    //auto detectionT = std::thread( Detection, motor );
+                    detectionT = std::thread( Detection, motor );
                 }
                 else if ( device.event.number == device.ButtonType::O ) {
-                    break;// std::terminate( detectionT );
+                    motor->SetControlType( Motors::ControlType::Manual );
+                    if ( detectionT.joinable() ) detectionT.join();
+                    break;
                 }
                 if ( device.event.number == device.ButtonType::Throttle ) {
                     device.throttle = ( device.event.value ) ? true : false;
