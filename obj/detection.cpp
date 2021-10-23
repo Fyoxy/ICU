@@ -6,12 +6,11 @@ void Servo_Init();
 void MyFilledCircle( cv::Mat img, cv::Point center );
 double VectorAvg( std::vector<int> const& v );
 void CloseWindows();
-void DisplayHistogram( int height, int width, cv::Mat values, double middlepoint );
-
-cv::Mat src;
+void DisplayHistogram( cv::Mat src, int height, int width, cv::Mat values, double middlepoint );
 
 void Detection( Motors* motor ) {
     // Define video capture
+    cv::Mat src;
 	cv::VideoCapture cap(0);
 
     double t = 0;
@@ -120,7 +119,7 @@ void Detection( Motors* motor ) {
         // Find the average value
         double average = VectorAvg(arr);
 
-        //DisplayHistogram( src_height, src_width, histogramValues, average);
+        //DisplayHistogram( src, src_height, src_width, histogramValues, average);
 
         //imshow("hsv", hsv);
         //imshow("detectedFloor", frame_threshold);
@@ -185,7 +184,7 @@ void Handler(int signo)
     exit(0);
 }
 
-void DisplayHistogram( int height, int width, cv::Mat values, double middlepoint ) {
+void DisplayHistogram( cv::Mat src, int height, int width, cv::Mat values, double middlepoint ) {
 	
 	// Creating a black cv::MAT for histogram image to display
 	cv::Mat histogram( height, width, CV_8UC3, cv::Scalar( 0, 0, 0 ) );
