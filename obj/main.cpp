@@ -66,7 +66,7 @@ int main() {
                 // Kill motors, no throttle or reverse pressed
                 motor->SetSpeed( 0 );
             }
-            else if ( device.event.number == device.ButtonType::Reverse || device.event.number == device.ButtonType::Throttle ) {
+            else if ( device.axis == 1 || device.axis == 2 ) {
                 // Get axis state because otherwise it may get button pressed before axis.
                 //device.axis = get_axis_state(&device.event, device.axes);
 
