@@ -70,7 +70,7 @@ int main() {
                 //device.axis = get_axis_state(&device.event, device.axes);
 
                 // Converting controller data to acceptable PWM range
-                int axis = ( device.throttle ) ? device.axes[device.axis].y : device.axes[device.axis].x;
+                int axis = ( device.event.number == device.ButtonType::Throttle ) ? device.axes[device.axis].y : device.axes[device.axis].x;
 
                 std::cout << "Axes Y  " << device.axes[device.axis].y << std::endl;
                 std::cout << "Axes X  " << device.axes[device.axis].x << std::endl;
