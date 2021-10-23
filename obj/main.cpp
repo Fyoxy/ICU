@@ -73,7 +73,7 @@ int main() {
                 // Converting controller data to acceptable PWM range
                 int axis = ( device.throttle ) ? device.axes[device.axis].y : device.axes[device.axis].x;
 
-                std::cout << "Axes Y  " << device.axes[device.axis].y << std::endl;
+                std::cout << "Axes Y  " << device.axis << std::endl;
                 std::cout << "Axes X  " << device.axes[device.axis].x << std::endl;
 
                 // Split CONTROLLER_AXIS_MAX into 50 segments for negative and positive values
