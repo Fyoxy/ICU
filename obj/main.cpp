@@ -67,7 +67,7 @@ int main() {
             }
             else if ( device.event.number == device.ButtonType::Reverse || device.event.number == device.ButtonType::Throttle ) {
                 // Get axis state because otherwise it may get button pressed before axis.
-                device.axis = get_axis_state(&device.event, device.axes);
+                //device.axis = get_axis_state(&device.event, device.axes);
 
                 // Converting controller data to acceptable PWM range
                 int axis = ( device.throttle ) ? device.axes[device.axis].x : device.axes[device.axis].x;
