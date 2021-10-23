@@ -7,6 +7,7 @@
 
 int main() {
 
+    // test
 	std::cout << "Motors init" << std::endl;
 	Motors* motor = new Motors();
 	
