@@ -130,7 +130,7 @@ void Detection( Motors* motor ) {
 
         //motor->SetAngle( curve )
 
-		imshow("source", src);
+		//imshow("source", src);
 
 		// Total execution time
 		t = (double)getTickCount() - t;
