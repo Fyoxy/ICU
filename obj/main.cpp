@@ -67,6 +67,7 @@ int main() {
                 // Kill motors, no throttle or reverse pressed
                 motor->SetSpeed( 0 );
             }
+            // Check if L2 axis or R2 axis
             else if ( device.axis == 1 || device.axis == 2 ) {
                 // Get axis state because otherwise it may get button pressed before axis.
                 //device.axis = get_axis_state(&device.event, device.axes);
