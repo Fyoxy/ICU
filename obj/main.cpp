@@ -70,15 +70,14 @@ int main() {
                 //device.axis = get_axis_state(&device.event, device.axes);
 
                 // Converting controller data to acceptable PWM range
-                int axis = ( device.throttle ) ? device.axes[device.axis].x : device.axes[device.axis].x;
-
-                std::cout << "Axis X " << device.axes[device.axis].x << std::endl;
-                std::cout << "Axis Y " << device.axes[device.axis].y << std::endl;
+                int axis = ( device.throttle ) ? device.axes[device.axis].y : device.axes[device.axis].x;
 
                 // Split CONTROLLER_AXIS_MAX into 50 segments for negative and positive values
                 // DS4 Controller sends values from -32767 to 32767
                 int divider = CONTROLLER_AXIS_MAX / 50;
                 int speed = ( int ) abs( axis ) / divider;
+
+                std::cout << "Divider  " << divider << std::endl;
                 
                 std::cout << "Speed1 " << speed << std::endl;
                 // Check check if throttle or anything else
