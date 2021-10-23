@@ -16,7 +16,7 @@ void Detection( Motors* motor ) {
     double t = 0;
 
     // Set motor speed by default
-    motor->SetSpeed( 80 );
+    //motor->SetSpeed( 80 );
 
     std::cout << "ControlType:: " << motor->GetControlType() << std::endl;
 
