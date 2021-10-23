@@ -30,6 +30,7 @@ void Detection( Motors* motor ) {
 
 		// Send VideoCapture to src Mat
 		cap >> src;
+        cout << "Check -1" << endl;
         if(src.empty()) {
 			cout << "Source empty" << endl;
 			break;
