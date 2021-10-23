@@ -22,7 +22,7 @@ void Detection( Motors* motor ) {
     // Set motor speed by default
     motor->SetSpeed( 80 );
 
-    cout << "Cap:: " << cap.isOpened() << endl;
+    cout << "ControlType:: " << motor->GetControlType() << endl;
 
 	while ( cap.isOpened() && motor->GetControlType() )
     {
@@ -47,6 +47,8 @@ void Detection( Motors* motor ) {
 
 		//char key = (char) waitKey(1);
 
+        cout << "Check 1" << endl;
+
         Mat crop;
         // X[0] and Y[0], X[1] and Y[1]
         Rect crop_region(0, 120, src_width, 120);
@@ -57,6 +59,8 @@ void Detection( Motors* motor ) {
         // READ RGB color image and convert it to Lab
         Mat lab_image;
         cvtColor(crop, lab_image, CV_BGR2Lab);
+
+        cout << "Check 2" << endl;
 
         // Extract the L channel
         vector<Mat> lab_planes(3);
@@ -69,6 +73,8 @@ void Detection( Motors* motor ) {
         Mat dst;
         clahe->apply(lab_planes[0], dst);
 
+        cout << "Check 3" << endl;
+
         // Merge the the color planes back into an Lab image
         dst.copyTo(lab_planes[0]);
         cv::merge(lab_planes, lab_image);
@@ -80,6 +86,8 @@ void Detection( Motors* motor ) {
         // Convert to HSV
         Mat hsv;
         cvtColor(image_clahe, hsv, CV_BGR2HSV);
+
+        cout << "Check 4" << endl;
 
         // Detect floor
         Mat frame_threshold;
@@ -97,6 +105,8 @@ void Detection( Motors* motor ) {
         // Filter noise
         vector<int> arr;
         size_t c = 0;
+
+        cout << "Check 5" << endl;
 
         for(int i = 0; i < histogramValues.cols; i++)
         {
