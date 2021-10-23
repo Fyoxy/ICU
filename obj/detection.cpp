@@ -20,7 +20,7 @@ void Detection( Motors* motor ) {
 
     std::cout << "ControlType:: " << motor->GetControlType() << std::endl;
 
-	while ( cap.isOpened() && motor->GetControlType() )
+	while ( cap.isOpened() && !motor->GetControlType() )
     {
         std::cout << "Looping" << std::endl;
 
