@@ -39,11 +39,12 @@ int main() {
                 }
                 if ( device.event.number == device.ButtonType::Throttle ) {
                     device.throttle = ( device.event.value ) ? true : false;
+                    break;
                 }
                 else if ( device.event.number == device.ButtonType::Reverse ) {
                     device.reverse = ( device.event.value ) ? true : false;
+                    break;
                 }
-                break;
             case JS_EVENT_AXIS:
                 device.axis = get_axis_state(&device.event, device.axes);
                 if ( device.axis ) {
@@ -70,7 +71,7 @@ int main() {
                 //device.axis = get_axis_state(&device.event, device.axes);
 
                 // Converting controller data to acceptable PWM range
-                int axis = ( device.event.number == device.ButtonType::Throttle ) ? device.axes[device.axis].y : device.axes[device.axis].x;
+                int axis = ( device.throttle ) ? device.axes[device.axis].y : device.axes[device.axis].x;
 
                 std::cout << "Axes Y  " << device.axes[device.axis].y << std::endl;
                 std::cout << "Axes X  " << device.axes[device.axis].x << std::endl;
