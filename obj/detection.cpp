@@ -24,7 +24,7 @@ void Detection( Motors* motor ) {
 
     cout << "Cap:: " << cap.isOpened() << endl;
 
-	while ( cap.isOpened() && !motor->GetControlType() )
+	while ( cap.isOpened() && motor->GetControlType() )
     {
         cout << "Looping" << endl;
 
