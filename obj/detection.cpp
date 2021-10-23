@@ -26,13 +26,10 @@ void Detection( Motors* motor ) {
 
 		// Send VideoCapture to src cv::Mat
 		cap >> src;
-        std::cout << "Check -1" << std::endl;
         if(src.empty()) {
 			std::cout << "Source empty" << std::endl;
 			break;
 		}
-
-        std::cout << "Check 0" << std::endl;
 
 		// Camera positioned upside-down
 		cv::flip(src, src, -1);
@@ -46,8 +43,6 @@ void Detection( Motors* motor ) {
 
 		//char key = (char) waitKey(1);
 
-        std::cout << "Check 1" << std::endl;
-
         cv::Mat crop;
         // X[0] and Y[0], X[1] and Y[1]
         cv::Rect crop_region(0, 120, src_width, 120);
@@ -58,8 +53,6 @@ void Detection( Motors* motor ) {
         // READ RGB color image and convert it to Lab
         cv::Mat lab_image;
         cvtColor(crop, lab_image, CV_BGR2Lab);
-
-        std::cout << "Check 2" << std::endl;
 
         // Extract the L channel
         std::vector<cv::Mat> lab_planes(3);
@@ -72,8 +65,6 @@ void Detection( Motors* motor ) {
         cv::Mat dst;
         clahe->apply(lab_planes[0], dst);
 
-        std::cout << "Check 3" << std::endl;
-
         // Merge the the color planes back into an Lab image
         dst.copyTo(lab_planes[0]);
         cv::merge(lab_planes, lab_image);
@@ -85,8 +76,6 @@ void Detection( Motors* motor ) {
         // Convert to HSV
         cv::Mat hsv;
         cvtColor(image_clahe, hsv, CV_BGR2HSV);
-
-        std::cout << "Check 4" << std::endl;
 
         // Detect floor
         cv::Mat frame_threshold;
@@ -104,8 +93,6 @@ void Detection( Motors* motor ) {
         // Filter noise
         std::vector<int> arr;
         size_t c = 0;
-
-        std::cout << "Check 5" << std::endl;
 
         for(int i = 0; i < histogramValues.cols; i++)
         {

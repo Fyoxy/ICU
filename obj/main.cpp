@@ -29,7 +29,11 @@ int main() {
                 }
                 else if ( device.event.number == device.ButtonType::O ) {
                     motor->SetControlType( Motors::ControlType::Manual );
-                    if ( detectionT.joinable() ) detectionT.join();
+                    std::cout << "Manual control" << std::endl;
+                    if ( detectionT.joinable() ) {
+                        std::cout << "Waiting to join" << std::endl;
+                        detectionT.join();
+                    } 
                     break;
                 }
                 if ( device.event.number == device.ButtonType::Throttle ) {
