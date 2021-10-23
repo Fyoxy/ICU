@@ -1,48 +1,45 @@
 #include "detection.hpp"
 
 
-using namespace std;
-using namespace cv;
-
 void Dilation( int, void* );
 void Servo_Init();
-void MyFilledCircle( Mat img, Point center );
+void MyFilledCircle( cv::Mat img, cv::Point center );
 double VectorAvg( std::vector<int> const& v );
 void CloseWindows();
-void DisplayHistogram( int height, int width, Mat values, double middlepoint );
+void DisplayHistogram( int height, int width, cv::Mat values, double middlepoint );
+
+cv::Mat src;
 
 void Detection( Motors* motor ) {
     // Define video capture
-	VideoCapture cap(0);
-
-    Mat src;
+	cv::VideoCapture cap(0);
 
     double t = 0;
 
     // Set motor speed by default
     motor->SetSpeed( 80 );
 
-    cout << "ControlType:: " << motor->GetControlType() << endl;
+    std::cout << "ControlType:: " << motor->GetControlType() << std::endl;
 
 	while ( cap.isOpened() && motor->GetControlType() )
     {
-        cout << "Looping" << endl;
+        std::cout << "Looping" << std::endl;
 
-		// Send VideoCapture to src Mat
+		// Send VideoCapture to src cv::Mat
 		cap >> src;
-        cout << "Check -1" << endl;
+        std::cout << "Check -1" << std::endl;
         if(src.empty()) {
-			cout << "Source empty" << endl;
+			std::cout << "Source empty" << std::endl;
 			break;
 		}
 
-        cout << "Check 0" << endl;
+        std::cout << "Check 0" << std::endl;
 
 		// Camera positioned upside-down
-		flip(src, src, -1);
+		cv::flip(src, src, -1);
 
 		// Performance test
-		t = (double)getTickCount();
+		t = (double) cv::getTickCount();
 
 		// Get source image height and width
 		int src_height = src.size().height;
@@ -50,66 +47,66 @@ void Detection( Motors* motor ) {
 
 		//char key = (char) waitKey(1);
 
-        cout << "Check 1" << endl;
+        std::cout << "Check 1" << std::endl;
 
-        Mat crop;
+        cv::Mat crop;
         // X[0] and Y[0], X[1] and Y[1]
-        Rect crop_region(0, 120, src_width, 120);
+        cv::Rect crop_region(0, 120, src_width, 120);
 
         crop=src(crop_region);
 
         // Clahe equalization
         // READ RGB color image and convert it to Lab
-        Mat lab_image;
+        cv::Mat lab_image;
         cvtColor(crop, lab_image, CV_BGR2Lab);
 
-        cout << "Check 2" << endl;
+        std::cout << "Check 2" << std::endl;
 
         // Extract the L channel
-        vector<Mat> lab_planes(3);
+        std::vector<cv::Mat> lab_planes(3);
         split(lab_image, lab_planes);  // now we have the L image in lab_planes[0]
 
         // apply the CLAHE algorithm to the L channel
-        Ptr<CLAHE> clahe = createCLAHE();
+        cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE();
         clahe->setClipLimit(3);
-        clahe->setTilesGridSize( Size (8,8) );
-        Mat dst;
+        clahe->setTilesGridSize( cv::Size (8,8) );
+        cv::Mat dst;
         clahe->apply(lab_planes[0], dst);
 
-        cout << "Check 3" << endl;
+        std::cout << "Check 3" << std::endl;
 
         // Merge the the color planes back into an Lab image
         dst.copyTo(lab_planes[0]);
         cv::merge(lab_planes, lab_image);
 
         // convert back to RGB
-        Mat image_clahe;
+        cv::Mat image_clahe;
         cvtColor(lab_image, image_clahe, CV_Lab2BGR);
 
         // Convert to HSV
-        Mat hsv;
+        cv::Mat hsv;
         cvtColor(image_clahe, hsv, CV_BGR2HSV);
 
-        cout << "Check 4" << endl;
+        std::cout << "Check 4" << std::endl;
 
         // Detect floor
-        Mat frame_threshold;
-        inRange(hsv, Scalar(37, 0, 0), Scalar(179, 255, 255), frame_threshold);
+        cv::Mat frame_threshold;
+        inRange(hsv, cv::Scalar(37, 0, 0), cv::Scalar(179, 255, 255), frame_threshold);
 
         // Sum image intensity values by columns
-        Mat histogramValues;
-        reduce( frame_threshold, histogramValues, 0, CV_REDUCE_SUM, CV_32F );
+        cv::Mat histogramValues;
+        cv::reduce( frame_threshold, histogramValues, 0, CV_REDUCE_SUM, CV_32F );
 
         // Find min and max values
         double min, max;
-        minMaxIdx( histogramValues, &min, &max );
+        cv::minMaxIdx( histogramValues, &min, &max );
         min = 0.8 * max;
 
         // Filter noise
-        vector<int> arr;
+        std::vector<int> arr;
         size_t c = 0;
 
-        cout << "Check 5" << endl;
+        std::cout << "Check 5" << std::endl;
 
         for(int i = 0; i < histogramValues.cols; i++)
         {
@@ -146,12 +143,12 @@ void Detection( Motors* motor ) {
 		//imshow("source", src);
 
 		// Total execution time
-		t = (double)getTickCount() - t;
-		printf( "Total execution time = %g ms\n", t*1000/getTickFrequency());
+		t = (double) cv::getTickCount() - t;
+		printf( "Total execution time = %g ms\n", t*1000/ cv::getTickFrequency());
     }   
 }
 
-void MyFilledCircle( Mat img, Point center )
+void MyFilledCircle( cv::Mat img, cv::Point center )
 {
 	/* Source image */
 	/* Center point */
@@ -161,9 +158,9 @@ void MyFilledCircle( Mat img, Point center )
 	circle( img,
     	center,
     	20,
-    	Scalar( 0, 255, 255 ),
-    	FILLED,
-    	LINE_8 );
+    	cv::Scalar( 0, 255, 255 ),
+    	cv::FILLED,
+    	cv::LINE_8 );
 }
 
 double VectorAvg(std::vector<int> const& v) {
@@ -171,10 +168,10 @@ double VectorAvg(std::vector<int> const& v) {
 }
 
 void CloseWindows() {
-	if (getWindowProperty("Area", WND_PROP_AUTOSIZE) != -1) destroyWindow("Area");
-	if (getWindowProperty("histogram", WND_PROP_AUTOSIZE) != -1) destroyWindow("histogram");
-	if (getWindowProperty("hsv", WND_PROP_AUTOSIZE) != -1) destroyWindow("hsv");
-	if (getWindowProperty("detectedFloor", WND_PROP_AUTOSIZE) != -1) destroyWindow("detectedFloor");
+	if (getWindowProperty("Area", cv::WND_PROP_AUTOSIZE) != -1) cv::destroyWindow("Area");
+	if (getWindowProperty("histogram", cv::WND_PROP_AUTOSIZE) != -1) cv::destroyWindow("histogram");
+	if (getWindowProperty("hsv", cv::WND_PROP_AUTOSIZE) != -1) cv::destroyWindow("hsv");
+	if (getWindowProperty("detectedFloor", cv::WND_PROP_AUTOSIZE) != -1) cv::destroyWindow("detectedFloor");
 }
 
 void Handler(int signo)
@@ -184,14 +181,14 @@ void Handler(int signo)
     Motor_Stop(MOTORA);
     Motor_Stop(MOTORB);
     DEV_ModuleExit();
-    destroyAllWindows();
+    cv::destroyAllWindows();
     exit(0);
 }
 
-void DisplayHistogram( int height, int width, Mat values, double middlepoint ) {
+void DisplayHistogram( int height, int width, cv::Mat values, double middlepoint ) {
 	
-	// Creating a black MAT for histogram image to display
-	Mat histogram( height, width, CV_8UC3, Scalar( 0, 0, 0 ) );
+	// Creating a black cv::MAT for histogram image to display
+	cv::Mat histogram( height, width, CV_8UC3, cv::Scalar( 0, 0, 0 ) );
 
 	// Variable for storing the height of a histogram line
 	double intensity;
@@ -202,15 +199,15 @@ void DisplayHistogram( int height, int width, Mat values, double middlepoint ) {
 		intensity = values.at<float>( 0, i );
 
 		// Draw the line on the histogram image based on the source dimensions
-		line( histogram, Point( i, height ), Point( i, height - ( ( int ) intensity / 255 ) ), Scalar( 140, 0, 255 ), 1, LINE_8 );
+		cv::line( histogram, cv::Point( i, height ), cv::Point( i, height - ( ( int ) intensity / 255 ) ), cv::Scalar( 140, 0, 255 ), 1, cv::LINE_8 );
 	}
 
 	// Draw the curvature pointer
-	MyFilledCircle( histogram, Point( ( int ) middlepoint, height ) );
+	MyFilledCircle( histogram, cv::Point( ( int ) middlepoint, height ) );
 
 	// Combine the histogram image with the source video 
-	Mat result( height, width, CV_8UC3, cv::Scalar( 0, 255, 0 ) );
-	Mat thefinal;
+	cv::Mat result( height, width, CV_8UC3, cv::Scalar( 0, 255, 0 ) );
+	cv::Mat thefinal;
 	addWeighted( src, 1, histogram, 1, 0, thefinal );
 
 	imshow("Source and Histogram", thefinal);
