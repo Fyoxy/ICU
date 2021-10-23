@@ -12,11 +12,11 @@ int main() {
 	
 	std::cout << "Controller init" << std::endl;
 	Controller device;
+
+    std::thread detectionT;
 	
 	std::cout << "Starting controller listener" << std::endl;
     while ( read_event( device.controller, &device.event ) == 0 ) {
-
-        std::thread detectionT;
 
         // Get controller input
         switch (device.event.type)
