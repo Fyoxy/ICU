@@ -77,17 +77,20 @@ int main() {
                 int divider = CONTROLLER_AXIS_MAX / 50;
                 int speed = ( int ) abs( axis ) / divider;
                 
+                std::cout << "Speed1 " << speed << std::endl;
                 // Check check if throttle or anything else
                 if ( device.throttle ) {
                     // Check if axis was negative or positive to determine speed segment 1 - 50 or 51 - 100
                     speed = ( device.axes[device.axis].y > 0 ) ? ( 50 + speed ) : ( 51 - speed );
                     motor->SetSpeed( speed );
+                    std::cout << "Speed2 " << speed << std::endl;
                 }
                 else {
                     // Same process for reverse
                     speed = ( device.axes[device.axis].x > 0 ) ? ( 50 + speed ) : ( 51 - speed );
                     // Invert speed to reverse
                     motor->SetSpeed( -speed );
+                    std::cout << "Speed3 " << speed << std::endl;
                 }
             }
 
