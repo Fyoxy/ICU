@@ -24,6 +24,7 @@ int main() {
             case JS_EVENT_BUTTON:
                 if ( device.event.number == device.ButtonType::T ) {
                     detectionT = std::thread( Detection, motor );
+                    break;
                 }
                 else if ( device.event.number == device.ButtonType::O ) {
                     motor->SetControlType( Motors::ControlType::Manual );
