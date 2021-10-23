@@ -8,7 +8,7 @@
 int main() {
 
 	std::cout << "Motors init" << std::endl;
-	Motors motor;
+	Motors* motor = new Motors();
 	
 	std::cout << "Controller init" << std::endl;
 	Controller device;
@@ -46,12 +46,12 @@ int main() {
                 break;
         }
 
-        if ( motor.GetControlType() ) {
+        if ( motor->GetControlType() ) {
 
             // If input throttle or reverse
             if ( ( !device.throttle && !device.reverse ) ) {
                 // Kill motors, no throttle or reverse pressed
-                motor.SetSpeed( 0 );
+                motor->SetSpeed( 0 );
             }
             else {
                 // Get axis state because otherwise it may get button pressed before axis.
@@ -69,13 +69,13 @@ int main() {
                 if ( device.throttle ) {
                     // Check if axis was negative or positive to determine speed segment 1 - 50 or 51 - 100
                     speed = ( device.axes[device.axis].y > 0 ) ? ( 50 + speed ) : ( 51 - speed );
-                    motor.SetSpeed( speed );
+                    motor->SetSpeed( speed );
                 }
                 else {
                     // Same process for reverse
                     speed = ( device.axes[device.axis].x > 0 ) ? ( 50 + speed ) : ( 51 - speed );
                     // Invert speed to reverse
-                    motor.SetSpeed( -speed );
+                    motor->SetSpeed( -speed );
                 }
             }
 
@@ -84,7 +84,7 @@ int main() {
                 std::cout << "Servo control" << std::endl;
                 if ( device.axes[device.axis].x == 0 ) {
                     std::cout << "Base" << std::endl;
-                    motor.SetAngle( SERVO_BASE_ANGLE );
+                    motor->SetAngle( SERVO_BASE_ANGLE );
                 } 
                 else {
                     // Converting controller data to acceptable PWM range
@@ -99,10 +99,10 @@ int main() {
                     std::cout << "Angle: " << angle << std::endl;
 
                     if ( device.axes[device.axis].x < 0 ) {
-                        motor.SetAngle( SERVO_BASE_ANGLE + angle - 1 );
+                        motor->SetAngle( SERVO_BASE_ANGLE + angle - 1 );
                     }  
                     else if ( device.axes[device.axis].x > 0 ) { 
-                        motor.SetAngle( SERVO_BASE_ANGLE - angle + 1 );
+                        motor->SetAngle( SERVO_BASE_ANGLE - angle + 1 );
                     }
                 } 
             }
