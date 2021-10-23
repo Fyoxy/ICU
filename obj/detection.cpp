@@ -35,6 +35,8 @@ void Detection( Motors* motor ) {
 			break;
 		}
 
+        cout << "Check 0" << endl;
+
 		// Camera positioned upside-down
 		flip(src, src, -1);
 
