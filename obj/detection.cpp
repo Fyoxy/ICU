@@ -26,6 +26,7 @@ void Detection( Motors* motor ) {
 
 	while ( cap.isOpened() && !motor->GetControlType() )
     {
+        cout << "Looping" << endl;
 
 		// Send VideoCapture to src Mat
 		cap >> src;
