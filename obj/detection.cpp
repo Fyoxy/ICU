@@ -11,11 +11,11 @@ double VectorAvg( std::vector<int> const& v );
 void CloseWindows();
 void DisplayHistogram( int height, int width, Mat values, double middlepoint );
 
-Mat src;
-
 void Detection( Motors* motor ) {
     // Define video capture
 	VideoCapture cap(0);
+
+    Mat src;
 
     double t = 0;
 
