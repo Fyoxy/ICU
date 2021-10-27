@@ -30,11 +30,6 @@ int main() {
                 }
                 else if ( device.event.number == device.ButtonType::O ) {
                     motor->SetControlType( Motors::ControlType::Manual );
-                    std::cout << "Manual control" << std::endl;
-                    if ( detectionT.joinable() ) {
-                        std::cout << "Waiting to join" << std::endl;
-                        detectionT.join();
-                    } 
                     break;
                 }
                 if ( device.event.number == device.ButtonType::Throttle ) {
@@ -74,38 +69,28 @@ int main() {
                 // Converting controller data to acceptable PWM range
                 int axis = ( device.throttle ) ? device.axes[device.axis].y : device.axes[device.axis].x;
 
-                std::cout << "Axes Y  " << device.axis << std::endl;
-                std::cout << "Axes X  " << device.axes[device.axis].x << std::endl;
-
                 // Split CONTROLLER_AXIS_MAX into 50 segments for negative and positive values
                 // DS4 Controller sends values from -32767 to 32767
                 int divider = CONTROLLER_AXIS_MAX / 50;
                 int speed = ( int ) abs( axis ) / divider;
 
-                std::cout << "Divider  " << divider << std::endl;
-                
-                std::cout << "Speed1 " << speed << std::endl;
                 // Check check if throttle or anything else
                 if ( device.throttle ) {
                     // Check if axis was negative or positive to determine speed segment 1 - 50 or 51 - 100
                     speed = ( device.axes[device.axis].y > 0 ) ? ( 50 + speed ) : ( 51 - speed );
                     motor->SetSpeed( speed );
-                    std::cout << "Speed2 " << speed << std::endl;
                 }
                 else {
                     // Same process for reverse
                     speed = ( device.axes[device.axis].x > 0 ) ? ( 50 + speed ) : ( 51 - speed );
                     // Invert speed to reverse
                     motor->SetSpeed( -speed );
-                    std::cout << "Speed3 " << speed << std::endl;
                 }
             }
 
             // If steering with left thumbstick
             if ( device.axis == 0 ) {
-                std::cout << "Servo control" << std::endl;
                 if ( device.axes[device.axis].x == 0 ) {
-                    std::cout << "Base" << std::endl;
                     motor->SetAngle( SERVO_BASE_ANGLE );
                 } 
                 else {
@@ -118,7 +103,6 @@ int main() {
                     // Conversion loop to get angle up to 200
                     int angle = ( int ) abs( axis ) / divider;
 
-                    std::cout << "Angle: " << angle << std::endl;
 
                     if ( device.axes[device.axis].x < 0 ) {
                         motor->SetAngle( SERVO_BASE_ANGLE + angle - 1 );
