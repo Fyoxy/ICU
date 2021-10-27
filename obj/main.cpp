@@ -16,6 +16,8 @@ int main() {
 
     Led led;
 
+    led.SetLed( Led::LedColor::Red );
+
     std::thread detectionT;
 	
 	std::cout << "Starting controller listener" << std::endl;
