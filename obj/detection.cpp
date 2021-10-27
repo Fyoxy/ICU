@@ -112,19 +112,10 @@ void Detection( Motors* motor ) {
         //imshow("detectedFloor", frame_threshold);
 
         // RPi servo control
-        int curve = (int) (average - 320) / 21;
+        int curve = (int) (average - 240);
 
-        std::cout << "Curve: " << curve << std::endl;
-        
-        //if (curve) curve *= -1.3;
-        //else if (!curve) curve *= -1.3;
-        //curve += angle;
-
-        //if (average > 320) angle
-        //if (angle > 15) angle += 15;
-        //else if (angle < -15) angle += -15;
-
-        //motor->SetAngle( curve )
+        std::cout << "curve: " << curve << std::endl;
+        motor->SetAngle( curve )
 
 		//imshow("source", src);
 
