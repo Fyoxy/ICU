@@ -17,7 +17,7 @@ void DisplayHistogram( cv::Mat src, int height, int width, cv::Mat values, doubl
 int main() {
     // Define video capture
     cv::Mat src;
-	cv::VideoCapture cap("../../test_footage/output.avi");
+	cv::VideoCapture cap(0);
 
     double t = 0;
 
@@ -33,7 +33,7 @@ int main() {
 		}
 
 		// Camera positioned upside-down
-		//cv::flip(src, src, -1);
+		cv::flip(src, src, -1);
 
 		// Performance test
 		t = (double) cv::getTickCount();
@@ -42,7 +42,7 @@ int main() {
 		int src_height = src.size().height;
 		int src_width = src.size().width;
 
-		char key = (char) cv::waitKey(30);
+		char key = (char) cv::waitKey(1);
 
         cv::Mat crop;
         // X[0] and Y[0], X[1] and Y[1]
@@ -110,7 +110,7 @@ int main() {
         DisplayHistogram( src, src_height, src_width, histogramValues, average);
 
         //imshow("hsv", hsv);
-        //imshow("detectedFloor", frame_threshold);
+        imshow("detectedFloor", frame_threshold);
 
         // RPi servo control
         int curve = (int) (average - 240);

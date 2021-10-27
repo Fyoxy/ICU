@@ -16,7 +16,7 @@ int main() {
 
     Led led;
 
-    led.SetLed( Led::LedColor::Red );
+    led.SetLed( Led::LedColor::RED );
 
     std::thread detectionT;
 	
