@@ -1,6 +1,7 @@
 #include "controller.hpp"
 #include "motors.hpp"
 #include "detection.hpp"
+#include "led.hpp"
 #include <thread>
 #include <chrono>
 #include <iostream>
@@ -12,6 +13,8 @@ int main() {
 	
 	std::cout << "Controller init" << std::endl;
 	Controller device;
+
+    Led led;
 
     std::thread detectionT;
 	
@@ -26,10 +29,12 @@ int main() {
                     motor->SetControlType( Motors::ControlType::Automatic );
                     detectionT = std::thread( Detection, motor );
                     detectionT.detach();
+                    led.SetLed( Led::LedColor::BLUE );
                     break;
                 }
                 else if ( device.event.number == device.ButtonType::O ) {
                     motor->SetControlType( Motors::ControlType::Manual );
+                    led.SetLed( Led::LedColor::GREEN );
                     break;
                 }
                 if ( device.event.number == device.ButtonType::Throttle ) {

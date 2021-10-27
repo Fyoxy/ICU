@@ -32,3 +32,7 @@ Led::Led() {
         gpioInitialise();
     }
 }
+
+Led::~Led() {
+    
+}
