@@ -30,7 +30,7 @@ void Motors::SetControlType ( ControlType type ) {
 }
 
 /* Sets the steering angle of the servo */
-void Motors::SetAngle ( int angleModifier, int multiplier ) {
+void Motors::SetAngle ( int angle, int multiplier ) {
 
 	if (angle > SERVO_MAX_ANGLE) m_angle = SERVO_MAX_ANGLE;
 	else if (angle < SERVO_MIN_ANGLE) m_angle = SERVO_MIN_ANGLE;
