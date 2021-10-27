@@ -115,7 +115,7 @@ void Detection( Motors* motor ) {
         int curve = (int) (average - 240);
 
         std::cout << "curve: " << curve << std::endl;
-        motor->SetAngle( curve );
+        motor->SetAngle( SERVO_MAX_ANGLE + curve );
 
 		//imshow("source", src);
 
