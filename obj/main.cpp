@@ -35,6 +35,7 @@ int main() {
                 else if ( device.event.number == device.ButtonType::O ) {
                     motor->SetControlType( Motors::ControlType::Manual );
                     led.SetLed( Led::LedColor::GREEN );
+                    motor->SetSpeed( 0 );
                     break;
                 }
                 if ( device.event.number == device.ButtonType::Throttle ) {

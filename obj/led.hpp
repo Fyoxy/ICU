@@ -10,8 +10,8 @@ public:
     ~Led(); 
 
     enum LedColor {
-        GREEN = 13,
-        BLUE = 19,
+        GREEN = 19,
+        BLUE = 13,
         RED = 26,
     };
 
