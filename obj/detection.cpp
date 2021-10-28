@@ -44,8 +44,8 @@ void Detection( Motors* motor ) {
 		//char key = (char) waitKey(1);
 
         cv::Mat crop;
-        // X[0] and Y[0], X[1] and Y[1]
-        cv::Rect crop_region(0, 120, src_width, 120);
+        // Rect variable( Pos. X, Pos. Y, Width, Height )
+        cv::Rect crop_region(0, 0, src_width, 120);
 
         crop=src(crop_region);
 

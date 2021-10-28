@@ -17,7 +17,7 @@ void DisplayHistogram( cv::Mat src, int height, int width, cv::Mat values, doubl
 int main() {
     // Define video capture
     cv::Mat src;
-	cv::VideoCapture cap(0);
+	cv::VideoCapture cap("../../test_footage/output.avi");
 
     double t = 0;
 
@@ -33,7 +33,7 @@ int main() {
 		}
 
 		// Camera positioned upside-down
-		cv::flip(src, src, -1);
+		//cv::flip(src, src, -1);
 
 		// Performance test
 		t = (double) cv::getTickCount();
@@ -42,10 +42,11 @@ int main() {
 		int src_height = src.size().height;
 		int src_width = src.size().width;
 
-		char key = (char) cv::waitKey(1);
+		char key = (char) cv::waitKey(30);
 
         cv::Mat crop;
-        // X[0] and Y[0], X[1] and Y[1]
+        // Rect variable( Pos. X, Pos. Y, Width, Height )
+        std::cout << src_height << std::endl;
         cv::Rect crop_region(0, 120, src_width, 120);
 
         crop=src(crop_region);
@@ -80,7 +81,7 @@ int main() {
 
         // Detect floor
         cv::Mat frame_threshold;
-        inRange(hsv, cv::Scalar(37, 0, 0), cv::Scalar(179, 255, 255), frame_threshold);
+        inRange(hsv, cv::Scalar(37, 0, 0), cv::Scalar(179, 255, 176), frame_threshold);
 
         // Sum image intensity values by columns
         cv::Mat histogramValues;
@@ -111,23 +112,6 @@ int main() {
 
         //imshow("hsv", hsv);
         imshow("detectedFloor", frame_threshold);
-
-        // RPi servo control
-        int curve = (int) (average - 240);
-
-        if (average);
-
-        std::cout << "Average: " <<  curve << std::endl;
-        
-        //if (curve) curve *= -1.3;
-        //else if (!curve) curve *= -1.3;
-        //curve += angle;
-
-        //if (average > 320) angle
-        //if (angle > 15) angle += 15;
-        //else if (angle < -15) angle += -15;
-
-        //motor->SetAngle( curve )
 
 		imshow("source", src);
 

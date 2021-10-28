@@ -44,7 +44,7 @@ static void on_high_V_thresh_trackbar(int, void *)
 }
 int main(int argc, char* argv[])
 {
-    VideoCapture cap("output.avi");
+    VideoCapture cap("../../test_footage/output.avi");
     namedWindow(window_capture_name);
     namedWindow(window_detection_name);
     // Trackbars to set thresholds for HSV values
@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
         // Show the frames
         imshow(window_capture_name, frame);
         imshow(window_detection_name, frame_threshold);
-        char key = (char) waitKey(30);
+        char key = (char) waitKey(120);
         if (key == 'q' || key == 27)
         {
             break;
