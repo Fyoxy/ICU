@@ -112,8 +112,8 @@ void Detection( Motors* motor ) {
         //imshow("detectedFloor", frame_threshold);
 
         // RPi servo control
-        int divider = 320 / 200;
-        int curve = ( int ) ( average - 320 ) / divider;
+        int divider = ( src_width / 2 ) / 200;
+        int curve = ( int ) ( average - ( src_width / 2 ) ) / divider;
 
         motor->SetAngle( SERVO_BASE_ANGLE - curve );
 
