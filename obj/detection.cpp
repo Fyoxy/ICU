@@ -16,7 +16,7 @@ void Detection( Motors* motor ) {
     double t = 0;
 
     // Set motor speed by default
-    motor->SetSpeed( 80 );
+    motor->SetSpeed( 100 );
 
     std::cout << "ControlType:: " << motor->GetControlType() << std::endl;
 
@@ -45,7 +45,7 @@ void Detection( Motors* motor ) {
 
         cv::Mat crop;
         // Rect variable( Pos. X, Pos. Y, Width, Height )
-        cv::Rect crop_region(0, 0, src_width, 120);
+        cv::Rect crop_region(0, 120, src_width, 120);
 
         crop=src(crop_region);
 
@@ -79,7 +79,7 @@ void Detection( Motors* motor ) {
 
         // Detect floor
         cv::Mat frame_threshold;
-        inRange(hsv, cv::Scalar(37, 0, 0), cv::Scalar(179, 255, 255), frame_threshold);
+        inRange(hsv, cv::Scalar(37, 0, 0), cv::Scalar(179, 255, 176), frame_threshold);
 
         // Sum image intensity values by columns
         cv::Mat histogramValues;
