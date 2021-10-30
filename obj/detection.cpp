@@ -1,6 +1,5 @@
 #include "detection.hpp"
 
-
 void Dilation( int, void* );
 void Servo_Init();
 void MyFilledCircle( cv::Mat img, cv::Point center );
@@ -9,6 +8,8 @@ void CloseWindows();
 void DisplayHistogram( cv::Mat src, int height, int width, cv::Mat values, double middlepoint );
 
 void Detection( Motors* motor ) {
+    
+
     // Define video capture
     cv::Mat src;
 	cv::VideoCapture cap(0);
@@ -40,8 +41,6 @@ void Detection( Motors* motor ) {
 		// Get source image height and width
 		int src_height = src.size().height;
 		int src_width = src.size().width;
-
-		char key = (char) cv::waitKey(1);
 
         cv::Mat crop;
         // Rect variable( Pos. X, Pos. Y, Width, Height )
@@ -114,9 +113,13 @@ void Detection( Motors* motor ) {
 
         std::cout << "Average: " << (SERVO_BASE_ANGLE - curve) << std::endl;
         
+        // Show image if definition set
+        /*
+        if ( SHOWIMG ) {
+            char key = (char) cv::waitKey(1);
+            DisplayHistogram( src, src_height, src_width, histogramValues, average);
+        }*/
 
-		//imshow("Frame", src);
-        DisplayHistogram( src, src_height, src_width, histogramValues, average);
 
 		// Total execution time
 		t = (double) cv::getTickCount() - t;

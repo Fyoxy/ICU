@@ -6,10 +6,65 @@
 #include <chrono>
 #include <iostream>
 
+#define TRIGGER 22
+#define ECHO 23
+
+void ultrasonic() {
+
+    gpioSetMode(TRIGGER, PI_OUTPUT);  // Set GPIO22 as input.
+    gpioSetMode(ECHO, PI_INPUT); // Set GPIO23 as output.
+
+    int distanceArr[20];
+    int counter;
+    
+
+    auto start = std::chrono::system_clock::now();
+    auto end = std::chrono::system_clock::now();
+
+    for (counter = 0;; counter++) {
+        // set Trigger to HIGH
+        gpioWrite(TRIGGER, 1);
+        std::this_thread::sleep_for(std::chrono::microseconds(10));
+        gpioWrite(TRIGGER, 0);
+
+        while ( gpioRead(ECHO) == 0 ) {
+            start = std::chrono::system_clock::now();
+        }
+
+        while ( gpioRead(ECHO) == 1 ) {
+            end = std::chrono::system_clock::now();
+        }
+
+        std::chrono::duration<float> timeElapsed = end - start;
+
+        auto distanceCm = (timeElapsed.count() * 34300) / 2;
+        std::cout << "Measured Distance = " << distanceCm << " cm" << std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+        distanceArr[counter] =  (int) distanceCm;
+
+        if ( counter >= 20 ) {
+
+            int average;
+
+            for (int i = 0; i < 20; i++) {
+                average += distanceArr[i];
+            }
+
+            average /= counter;
+            std::cout << "Average: " << average << std::endl;
+
+            counter = 0;
+        }
+
+    }
+
+}
+
 int main() {
 
     // Window initialization to show image from DisplayHistogram
-    cv::namedWindow("Source and Histogram", cv::WINDOW_AUTOSIZE);
+    //cv::namedWindow("Source and Histogram", cv::WINDOW_AUTOSIZE);
 
 	std::cout << "Motors init" << std::endl;
 	Motors* motor = new Motors();
@@ -22,6 +77,10 @@ int main() {
     led.SetLed( Led::LedColor::RED );
 
     std::thread detectionT;
+    std::thread ultraSonicT;
+
+    ultraSonicT = std::thread( ultrasonic );
+    //ultraSonicT.detach();
 	
 	std::cout << "Starting controller listener" << std::endl;
     while ( read_event( device.controller, &device.event ) == 0 ) {
