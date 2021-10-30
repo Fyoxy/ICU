@@ -120,7 +120,7 @@ void Detection( Motors* motor ) {
         std::cout << "Average: " << (SERVO_BASE_ANGLE - curve) << std::endl;
         
 
-		//imshow("source", src);
+		imshow("Frame", src);
 
 		// Total execution time
 		t = (double) cv::getTickCount() - t;

@@ -8,6 +8,8 @@
 
 int main() {
 
+    cv::namedWindow("Frame", cv::WINDOW_AUTOSIZE);
+
 	std::cout << "Motors init" << std::endl;
 	Motors* motor = new Motors();
 	
