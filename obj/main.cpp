@@ -8,7 +8,8 @@
 
 int main() {
 
-    cv::namedWindow("Frame", cv::WINDOW_AUTOSIZE);
+    // Window initialization to show image from DisplayHistogram
+    cv::namedWindow("Source and Histogram", cv::WINDOW_AUTOSIZE);
 
 	std::cout << "Motors init" << std::endl;
 	Motors* motor = new Motors();

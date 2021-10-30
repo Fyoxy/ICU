@@ -41,7 +41,7 @@ void Detection( Motors* motor ) {
 		int src_height = src.size().height;
 		int src_width = src.size().width;
 
-		//char key = (char) waitKey(1);
+		char key = (char) cv::waitKey(1);
 
         cv::Mat crop;
         // Rect variable( Pos. X, Pos. Y, Width, Height )
@@ -106,11 +106,6 @@ void Detection( Motors* motor ) {
         // Find the average value
         double average = VectorAvg(arr);
 
-        //DisplayHistogram( src, src_height, src_width, histogramValues, average);
-
-        //imshow("hsv", hsv);
-        //imshow("detectedFloor", frame_threshold);
-
         // RPi servo control
         int divider = ( src_width / 2 ) / 200;
         int curve = ( int ) ( average - ( src_width / 2 ) ) / divider;
@@ -120,7 +115,8 @@ void Detection( Motors* motor ) {
         std::cout << "Average: " << (SERVO_BASE_ANGLE - curve) << std::endl;
         
 
-		imshow("Frame", src);
+		//imshow("Frame", src);
+        DisplayHistogram( src, src_height, src_width, histogramValues, average);
 
 		// Total execution time
 		t = (double) cv::getTickCount() - t;
@@ -191,5 +187,5 @@ void DisplayHistogram( cv::Mat src, int height, int width, cv::Mat values, doubl
 	addWeighted( src, 1, histogram, 1, 0, thefinal );
 
 	imshow("Source and Histogram", thefinal);
-	imshow("histogram", histogram);
+	//imshow("histogram", histogram);
 }
