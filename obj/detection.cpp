@@ -8,7 +8,9 @@ void CloseWindows();
 void DisplayHistogram( cv::Mat src, int height, int width, cv::Mat values, double middlepoint );
 
 void Detection( Motors* motor ) {
-    
+
+    int curveArr[200] = {0};
+    int curveCounter = 0;
 
     // Define video capture
     cv::Mat src;
@@ -23,7 +25,15 @@ void Detection( Motors* motor ) {
 
 	while ( cap.isOpened() && !motor->GetControlType() )
     {
-        std::cout << "Looping" << std::endl;
+        
+        int temp = 0;
+        for (int i = 0; i < 200; i++) {
+            temp += curveArr[i]; 
+        }
+
+        temp /= 200; 
+
+        std::cout << "Average curve: " << temp << std::endl;
 
 		// Send VideoCapture to src cv::Mat
 		cap >> src;
@@ -109,10 +119,17 @@ void Detection( Motors* motor ) {
         int divider = ( src_width / 2 ) / 200;
         int curve = ( int ) ( average - ( src_width / 2 ) ) / divider;
 
-        motor->SetAngle( SERVO_BASE_ANGLE - curve );
+        curve = SERVO_BASE_ANGLE - curve;
 
-        std::cout << "Average: " << (SERVO_BASE_ANGLE - curve) << std::endl;
+        motor->SetAngle( curve );
+
+        std::cout << "Average: " << (curve) << std::endl;
         
+        curveArr[curveCounter] = curve;
+
+        curveCounter++;
+
+        if (curveCounter >= 200) curveCounter = 0;
         // Show image if definition set
         /*
         if ( SHOWIMG ) {
