@@ -19,7 +19,7 @@ void Detection( Motors* motor ) {
     double t = 0;
 
     // Set motor speed by default
-    motor->SetSpeed( 100 );
+    motor->SetSpeed( 20 );
 
     std::cout << "ControlType:: " << motor->GetControlType() << std::endl;
 
@@ -35,6 +35,8 @@ void Detection( Motors* motor ) {
                 curveArr[i] ? lastAverageCurve += curveArr[i] : zeroesCounter++;
             }
 
+            std::cout << lastAverageCurve << std::endl;
+
             lastAverageCurve /= ( 200 - zeroesCounter ); 
 
             if ( lastAverageCurve > 1500 ) {
@@ -49,8 +51,9 @@ void Detection( Motors* motor ) {
 
             motor->SetSpeed( -80 );
             std::this_thread::sleep_for( std::chrono::milliseconds( 2500 ) );
-            motor->SetSpeed( 0 );
+            motor->SetSpeed( 20 );
             motor->SetAngle( SERVO_BASE_ANGLE );
+            motor->robotStuck = 0;
 
         }
         else {

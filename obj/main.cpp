@@ -14,7 +14,7 @@ void ultrasonic( Motors* motor ) {
     gpioSetMode(TRIGGER, PI_OUTPUT);  // Set GPIO22 as input.
     gpioSetMode(ECHO, PI_INPUT); // Set GPIO23 as output.
 
-    int distanceArr[20];
+    int distanceArr[20] = {0};
     int counter;
     int average = 0;
     
@@ -53,12 +53,12 @@ void ultrasonic( Motors* motor ) {
             average /= counter;
             std::cout << "Average: " << average << std::endl;
 
-            counter = 0;
-        }
+            if ( average <= 10 ) {
+                motor->robotStuck = 1;
+                std::this_thread::sleep_for(std::chrono::milliseconds(10000));
+            }
 
-        if ( average <= 10 ) {
-            motor->robotStuck = 1;
-            std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+            counter = 0;
         }
 
     }
