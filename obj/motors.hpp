@@ -36,6 +36,8 @@ public:
 
 	int GetControlType();
 
+	int robotStuck = 0;
+
 private:
 
 	ControlType m_ControlType = Manual; 

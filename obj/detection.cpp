@@ -26,121 +26,144 @@ void Detection( Motors* motor ) {
 	while ( cap.isOpened() && !motor->GetControlType() )
     {
         
-        int temp = 0;
-        for (int i = 0; i < 200; i++) {
-            temp += curveArr[i]; 
-        }
+        if ( motor->robotStuck ) {
 
-        temp /= 200; 
+            int lastAverageCurve;
+            int zeroesCounter = 0;
 
-        std::cout << "Average curve: " << temp << std::endl;
-
-		// Send VideoCapture to src cv::Mat
-		cap >> src;
-        if(src.empty()) {
-			std::cout << "Source empty" << std::endl;
-			break;
-		}
-
-		// Camera positioned upside-down
-		cv::flip(src, src, -1);
-
-		// Performance test
-		t = (double) cv::getTickCount();
-
-		// Get source image height and width
-		int src_height = src.size().height;
-		int src_width = src.size().width;
-
-        cv::Mat crop;
-        // Rect variable( Pos. X, Pos. Y, Width, Height )
-        cv::Rect crop_region(0, 120, src_width, 120);
-
-        crop=src(crop_region);
-
-        // Clahe equalization
-        // READ RGB color image and convert it to Lab
-        cv::Mat lab_image;
-        cvtColor(crop, lab_image, CV_BGR2Lab);
-
-        // Extract the L channel
-        std::vector<cv::Mat> lab_planes(3);
-        split(lab_image, lab_planes);  // now we have the L image in lab_planes[0]
-
-        // apply the CLAHE algorithm to the L channel
-        cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE();
-        clahe->setClipLimit(3);
-        clahe->setTilesGridSize( cv::Size (8,8) );
-        cv::Mat dst;
-        clahe->apply(lab_planes[0], dst);
-
-        // Merge the the color planes back into an Lab image
-        dst.copyTo(lab_planes[0]);
-        cv::merge(lab_planes, lab_image);
-
-        // convert back to RGB
-        cv::Mat image_clahe;
-        cvtColor(lab_image, image_clahe, CV_Lab2BGR);
-
-        // Convert to HSV
-        cv::Mat hsv;
-        cvtColor(image_clahe, hsv, CV_BGR2HSV);
-
-        // Detect floor
-        cv::Mat frame_threshold;
-        inRange(hsv, cv::Scalar(37, 0, 0), cv::Scalar(179, 255, 176), frame_threshold);
-
-        // Sum image intensity values by columns
-        cv::Mat histogramValues;
-        cv::reduce( frame_threshold, histogramValues, 0, CV_REDUCE_SUM, CV_32F );
-
-        // Find min and max values
-        double min, max;
-        cv::minMaxIdx( histogramValues, &min, &max );
-        min = 0.8 * max;
-
-        // Filter noise
-        std::vector<int> arr;
-        size_t c = 0;
-
-        for(int i = 0; i < histogramValues.cols; i++)
-        {
-            if (histogramValues.at<float>(0, i) >= min) 
-            {
-                arr.push_back( i );
-                c++;
+            for (int i = 0; i < 200; i++) {
+                curveArr[i] ? lastAverageCurve += curveArr[i] : zeroesCounter++;
             }
+
+            lastAverageCurve /= ( 200 - zeroesCounter ); 
+
+            if ( lastAverageCurve > 1500 ) {
+                motor->SetAngle( SERVO_MAX_ANGLE );
+            }
+            else if ( lastAverageCurve < 1500 ) {
+                motor->SetAngle( SERVO_MIN_ANGLE );
+            }
+            else {
+                motor->SetAngle( SERVO_BASE_ANGLE );
+            }
+
+            motor->SetSpeed( -80 );
+            std::this_thread::sleep_for( std::chrono::milliseconds( 2500 ) );
+            motor->SetSpeed( 0 );
+            motor->SetAngle( SERVO_BASE_ANGLE );
+
+        }
+        else {
+
+            // Send VideoCapture to src cv::Mat
+            cap >> src;
+            if(src.empty()) {
+                std::cout << "Source empty" << std::endl;
+                break;
+            }
+
+            // Camera positioned upside-down
+            cv::flip(src, src, -1);
+
+            // Performance test
+            t = (double) cv::getTickCount();
+
+            // Get source image height and width
+            int src_height = src.size().height;
+            int src_width = src.size().width;
+
+            cv::Mat crop;
+            // Rect variable( Pos. X, Pos. Y, Width, Height )
+            cv::Rect crop_region(0, 120, src_width, 120);
+
+            crop=src(crop_region);
+
+            // Clahe equalization
+            // READ RGB color image and convert it to Lab
+            cv::Mat lab_image;
+            cvtColor(crop, lab_image, CV_BGR2Lab);
+
+            // Extract the L channel
+            std::vector<cv::Mat> lab_planes(3);
+            split(lab_image, lab_planes);  // now we have the L image in lab_planes[0]
+
+            // apply the CLAHE algorithm to the L channel
+            cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE();
+            clahe->setClipLimit(3);
+            clahe->setTilesGridSize( cv::Size (8,8) );
+            cv::Mat dst;
+            clahe->apply(lab_planes[0], dst);
+
+            // Merge the the color planes back into an Lab image
+            dst.copyTo(lab_planes[0]);
+            cv::merge(lab_planes, lab_image);
+
+            // convert back to RGB
+            cv::Mat image_clahe;
+            cvtColor(lab_image, image_clahe, CV_Lab2BGR);
+
+            // Convert to HSV
+            cv::Mat hsv;
+            cvtColor(image_clahe, hsv, CV_BGR2HSV);
+
+            // Detect floor
+            cv::Mat frame_threshold;
+            inRange(hsv, cv::Scalar(37, 0, 0), cv::Scalar(179, 255, 176), frame_threshold);
+
+            // Sum image intensity values by columns
+            cv::Mat histogramValues;
+            cv::reduce( frame_threshold, histogramValues, 0, CV_REDUCE_SUM, CV_32F );
+
+            // Find min and max values
+            double min, max;
+            cv::minMaxIdx( histogramValues, &min, &max );
+            min = 0.8 * max;
+
+            // Filter noise
+            std::vector<int> arr;
+            size_t c = 0;
+
+            for(int i = 0; i < histogramValues.cols; i++)
+            {
+                if (histogramValues.at<float>(0, i) >= min) 
+                {
+                    arr.push_back( i );
+                    c++;
+                }
+            }
+
+            // Find the average value
+            double average = VectorAvg(arr);
+
+            // RPi servo control
+            int divider = ( src_width / 2 ) / 200;
+            int curve = ( int ) ( average - ( src_width / 2 ) ) / divider;
+
+            curve = SERVO_BASE_ANGLE - curve;
+
+            motor->SetAngle( curve );
+
+            std::cout << "Average: " << (curve) << std::endl;
+            
+            curveArr[curveCounter] = curve;
+
+            curveCounter++;
+
+            if (curveCounter >= 200) curveCounter = 0;
+            // Show image if definition set
+            /*
+            if ( SHOWIMG ) {
+                char key = (char) cv::waitKey(1);
+                DisplayHistogram( src, src_height, src_width, histogramValues, average);
+            }*/
+
+
+            // Total execution time
+            t = (double) cv::getTickCount() - t;
+            printf( "Total execution time = %g ms\n", t*1000/ cv::getTickFrequency());
         }
 
-        // Find the average value
-        double average = VectorAvg(arr);
-
-        // RPi servo control
-        int divider = ( src_width / 2 ) / 200;
-        int curve = ( int ) ( average - ( src_width / 2 ) ) / divider;
-
-        curve = SERVO_BASE_ANGLE - curve;
-
-        motor->SetAngle( curve );
-
-        std::cout << "Average: " << (curve) << std::endl;
         
-        curveArr[curveCounter] = curve;
-
-        curveCounter++;
-
-        if (curveCounter >= 200) curveCounter = 0;
-        // Show image if definition set
-        /*
-        if ( SHOWIMG ) {
-            char key = (char) cv::waitKey(1);
-            DisplayHistogram( src, src_height, src_width, histogramValues, average);
-        }*/
-
-
-		// Total execution time
-		t = (double) cv::getTickCount() - t;
-		printf( "Total execution time = %g ms\n", t*1000/ cv::getTickFrequency());
     }   
 }
 

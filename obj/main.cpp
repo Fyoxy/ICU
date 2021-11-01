@@ -9,13 +9,14 @@
 #define TRIGGER 22
 #define ECHO 23
 
-void ultrasonic() {
+void ultrasonic( Motors* motor ) {
 
     gpioSetMode(TRIGGER, PI_OUTPUT);  // Set GPIO22 as input.
     gpioSetMode(ECHO, PI_INPUT); // Set GPIO23 as output.
 
     int distanceArr[20];
     int counter;
+    int average = 0;
     
 
     auto start = std::chrono::system_clock::now();
@@ -41,11 +42,9 @@ void ultrasonic() {
         std::cout << "Measured Distance = " << distanceCm << " cm" << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-        distanceArr[counter] =  (int) distanceCm;
+        distanceArr[counter] = (int) distanceCm;
 
         if ( counter >= 20 ) {
-
-            int average;
 
             for (int i = 0; i < 20; i++) {
                 average += distanceArr[i];
@@ -55,6 +54,11 @@ void ultrasonic() {
             std::cout << "Average: " << average << std::endl;
 
             counter = 0;
+        }
+
+        if ( average <= 10 ) {
+            motor->robotStuck = 1;
+            std::this_thread::sleep_for(std::chrono::milliseconds(3000));
         }
 
     }
@@ -79,8 +83,7 @@ int main() {
     std::thread detectionT;
     std::thread ultraSonicT;
 
-    ultraSonicT = std::thread( ultrasonic );
-    //ultraSonicT.detach();
+    ultraSonicT = std::thread( ultrasonic, motor );
 	
 	std::cout << "Starting controller listener" << std::endl;
     while ( read_event( device.controller, &device.event ) == 0 ) {
