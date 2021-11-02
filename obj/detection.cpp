@@ -21,23 +21,26 @@ void Detection( Motors* motor ) {
     // Set motor speed by default
     motor->SetSpeed( 20 );
 
-    std::cout << "ControlType:: " << motor->GetControlType() << std::endl;
-
 	while ( cap.isOpened() && !motor->GetControlType() )
     {
-        
+        // Check if robot is stuck
         if ( motor->robotStuck ) {
-
+            
+            // Temp variables
             int lastAverageCurve;
             int zeroesCounter = 0;
 
+            // Get last 200 curve values and get the average
             for (int i = 0; i < 200; i++) {
-                curveArr[i] ? lastAverageCurve += curveArr[i] : zeroesCounter++;
+                if ( curveArr[i] == 0 ) zeroesCounter++;
+                else {
+                    lastAverageCurve += curveArr[i];
+                }
             }
 
-            std::cout << lastAverageCurve << std::endl;
-
             lastAverageCurve /= ( 200 - zeroesCounter ); 
+
+            std::cout << "Last average curve was: " << lastAverageCurve << std::endl;
 
             if ( lastAverageCurve > 1500 ) {
                 motor->SetAngle( SERVO_MAX_ANGLE );
@@ -49,10 +52,15 @@ void Detection( Motors* motor ) {
                 motor->SetAngle( SERVO_BASE_ANGLE );
             }
 
+            // Wait for servo to turn
+            std::this_thread::sleep_for( std::chrono::milliseconds( 100 ) );
+            // Reverse for 1 second
             motor->SetSpeed( -80 );
-            std::this_thread::sleep_for( std::chrono::milliseconds( 2500 ) );
-            motor->SetSpeed( 20 );
+            std::this_thread::sleep_for( std::chrono::milliseconds( 1000 ) );
+
+            // Back to default speed
             motor->SetAngle( SERVO_BASE_ANGLE );
+            motor->SetSpeed( 20 );
             motor->robotStuck = 0;
 
         }
@@ -153,13 +161,6 @@ void Detection( Motors* motor ) {
             curveCounter++;
 
             if (curveCounter >= 200) curveCounter = 0;
-            // Show image if definition set
-            /*
-            if ( SHOWIMG ) {
-                char key = (char) cv::waitKey(1);
-                DisplayHistogram( src, src_height, src_width, histogramValues, average);
-            }*/
-
 
             // Total execution time
             t = (double) cv::getTickCount() - t;

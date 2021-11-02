@@ -39,8 +39,6 @@ void ultrasonic( Motors* motor ) {
         std::chrono::duration<float> timeElapsed = end - start;
 
         auto distanceCm = (timeElapsed.count() * 34300) / 2;
-        std::cout << "Measured Distance = " << distanceCm << " cm" << std::endl;
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
         distanceArr[counter] = (int) distanceCm;
 
@@ -54,12 +52,23 @@ void ultrasonic( Motors* motor ) {
             std::cout << "Average: " << average << std::endl;
 
             if ( average <= 10 ) {
+                // Set robot stuck
+                std::cout << "Robot stuck" << std::endl;
                 motor->robotStuck = 1;
-                std::this_thread::sleep_for(std::chrono::milliseconds(10000));
+
+                // Wait until detection algorithm reverses
+                while ( motor->robotStuck ) {
+                    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+                }
+                
             }
+            
 
             counter = 0;
         }
+
+        // Sleep to prevent ultrasonic sensor from crashing
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     }
 
