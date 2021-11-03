@@ -12,8 +12,10 @@ void Motors::SetSpeed( int speed ) {
 		std::cout << "Speed limit is -100 to 100" << std::endl;
 		std::cout << "Setting speed to -100" << std::endl;
 		speed = -100;
-
 	}
+
+
+	std::cout << "Motors set to: " << speed << std::endl;
 
 	MotorsPWMControl( speed );
 }
@@ -71,13 +73,13 @@ void Motors::MotorsPWMControl( int speed ) {
 
 	// In case of speed is positive go backwards
 	if (speed > 0) {
-		Motor_Run(MOTORB, FORWARD, -speed);
-		Motor_Run(MOTORA, FORWARD, -speed);
+		Motor_Run(MOTORB, BACKWARD, speed);
+		Motor_Run(MOTORA, BACKWARD, speed);
 	}
 	// If speed is negative go forward 
 	else if (speed < 0) {
-		Motor_Run(MOTORB, BACKWARD, speed);
-		Motor_Run(MOTORA, BACKWARD, speed);
+		Motor_Run(MOTORB, FORWARD, -speed);
+		Motor_Run(MOTORA, FORWARD, -speed);
 	}
 	else {
 		Motor_Stop(MOTORB);

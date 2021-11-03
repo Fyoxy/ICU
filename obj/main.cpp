@@ -51,7 +51,7 @@ void ultrasonic( Motors* motor ) {
             average /= counter;
             std::cout << "Average: " << average << std::endl;
 
-            if ( average <= 10 ) {
+            if ( average <= 15 ) {
                 // Set robot stuck
                 std::cout << "Robot stuck" << std::endl;
                 motor->robotStuck = 1;

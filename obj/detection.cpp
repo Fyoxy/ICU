@@ -19,7 +19,7 @@ void Detection( Motors* motor ) {
     double t = 0;
 
     // Set motor speed by default
-    motor->SetSpeed( 20 );
+    motor->SetSpeed( 80 );
 
 	while ( cap.isOpened() && !motor->GetControlType() )
     {
@@ -60,8 +60,9 @@ void Detection( Motors* motor ) {
 
             // Back to default speed
             motor->SetAngle( SERVO_BASE_ANGLE );
-            motor->SetSpeed( 50 );
+            motor->SetSpeed( 80 );
             motor->robotStuck = 0;
+            std::this_thread::sleep_for( std::chrono::milliseconds( 1000 ) );
 
         }
         else {
@@ -154,7 +155,7 @@ void Detection( Motors* motor ) {
 
             motor->SetAngle( curve );
 
-            std::cout << "Average: " << (curve) << std::endl;
+            //std::cout << "Average: " << (curve) << std::endl;
             
             curveArr[curveCounter] = curve;
 
@@ -164,7 +165,7 @@ void Detection( Motors* motor ) {
 
             // Total execution time
             t = (double) cv::getTickCount() - t;
-            printf( "Total execution time = %g ms\n", t*1000/ cv::getTickFrequency());
+            //printf( "Total execution time = %g ms\n", t*1000/ cv::getTickFrequency());
         }
 
         
