@@ -69,15 +69,15 @@ Motors::~Motors() {
 
 void Motors::MotorsPWMControl( int speed ) {
 
-	// In case of speed is positive go forward
+	// In case of speed is positive go backwards
 	if (speed > 0) {
-		Motor_Run(MOTORB, FORWARD, speed);
-		Motor_Run(MOTORA, FORWARD, speed);
+		Motor_Run(MOTORB, FORWARD, -speed);
+		Motor_Run(MOTORA, FORWARD, -speed);
 	}
-	// If speed is negative go backwards 
+	// If speed is negative go forward 
 	else if (speed < 0) {
-		Motor_Run(MOTORB, BACKWARD, -speed);
-		Motor_Run(MOTORA, BACKWARD, -speed);
+		Motor_Run(MOTORB, BACKWARD, speed);
+		Motor_Run(MOTORA, BACKWARD, speed);
 	}
 	else {
 		Motor_Stop(MOTORB);

@@ -60,7 +60,7 @@ void Detection( Motors* motor ) {
 
             // Back to default speed
             motor->SetAngle( SERVO_BASE_ANGLE );
-            motor->SetSpeed( 20 );
+            motor->SetSpeed( 50 );
             motor->robotStuck = 0;
 
         }
