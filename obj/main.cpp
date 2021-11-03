@@ -5,11 +5,18 @@
 #include <thread>
 #include <chrono>
 #include <iostream>
+#include <signal.h>
+
 
 #define TRIGGER 22
 #define ECHO 23
 
-void ultrasonic( Motors* motor ) {
+void SigintHandler(int s){
+    printf("Caught signal %d\n",s);
+    exit(1); 
+}
+
+void Ultrasonic( Motors* motor ) {
 
     gpioSetMode(TRIGGER, PI_OUTPUT);  // Set GPIO22 as input.
     gpioSetMode(ECHO, PI_INPUT); // Set GPIO23 as output.
@@ -79,6 +86,13 @@ int main() {
     // Window initialization to show image from DisplayHistogram
     //cv::namedWindow("Source and Histogram", cv::WINDOW_AUTOSIZE);
 
+    // Control-c handler
+    struct sigaction sigIntHandler;
+    sigIntHandler.sa_handler = SigintHandler;
+    sigemptyset(&sigIntHandler.sa_mask);
+    sigIntHandler.sa_flags = 0;
+    sigaction(SIGINT, &sigIntHandler, NULL);
+
 	std::cout << "Motors init" << std::endl;
 	Motors* motor = new Motors();
 	
@@ -92,7 +106,7 @@ int main() {
     std::thread detectionT;
     std::thread ultraSonicT;
 
-    ultraSonicT = std::thread( ultrasonic, motor );
+    ultraSonicT = std::thread( Ultrasonic, motor );
 	
 	std::cout << "Starting controller listener" << std::endl;
     while ( read_event( device.controller, &device.event ) == 0 ) {
