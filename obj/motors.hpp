@@ -37,6 +37,8 @@ public:
 	int GetControlType();
 
 	int robotStuck = 0;
+	int currentSpeed = 0;
+	float ultrasonicMultiplier = 1;
 
 private:
 

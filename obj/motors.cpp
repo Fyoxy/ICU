@@ -14,9 +14,6 @@ void Motors::SetSpeed( int speed ) {
 		speed = -100;
 	}
 
-
-	std::cout << "Motors set to: " << speed << std::endl;
-
 	MotorsPWMControl( speed );
 }
 
@@ -71,15 +68,17 @@ Motors::~Motors() {
 
 void Motors::MotorsPWMControl( int speed ) {
 
-	// In case of speed is positive go backwards
+	Motors::currentSpeed = speed;
+
+	// In case of speed is positive go forwards
 	if (speed > 0) {
-		Motor_Run(MOTORB, BACKWARD, speed);
-		Motor_Run(MOTORA, BACKWARD, speed);
+		Motor_Run(MOTORB, BACKWARD, ( speed * ultrasonicMultiplier ) );
+		Motor_Run(MOTORA, BACKWARD, ( speed * ultrasonicMultiplier ) );
 	}
-	// If speed is negative go forward 
+	// If speed is negative go backwards 
 	else if (speed < 0) {
-		Motor_Run(MOTORB, FORWARD, -speed);
-		Motor_Run(MOTORA, FORWARD, -speed);
+		Motor_Run(MOTORB, FORWARD, -speed );
+		Motor_Run(MOTORA, FORWARD, -speed );
 	}
 	else {
 		Motor_Stop(MOTORB);

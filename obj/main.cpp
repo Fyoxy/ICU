@@ -11,6 +11,11 @@
 #define TRIGGER 22
 #define ECHO 23
 
+#define SCANS 10 // Amount of scans for ultrasonic sensor
+#define STUCK_CM 15
+#define US_MIN_CM 15
+#define US_MAX_CM 15
+
 void SigintHandler(int s){
     printf("Caught signal %d\n",s);
     exit(1); 
@@ -21,7 +26,8 @@ void Ultrasonic( Motors* motor ) {
     gpioSetMode(TRIGGER, PI_OUTPUT);  // Set GPIO22 as input.
     gpioSetMode(ECHO, PI_INPUT); // Set GPIO23 as output.
 
-    int distanceArr[20] = {0};
+    int distanceArr[SCANS] = {0};
+    int averageArr[5] = {0};
     int counter;
     int average = 0;
     
@@ -45,20 +51,33 @@ void Ultrasonic( Motors* motor ) {
 
         std::chrono::duration<float> timeElapsed = end - start;
 
-        auto distanceCm = (timeElapsed.count() * 34300) / 2;
+        int distanceCm = (timeElapsed.count() * 34300) / 2;
 
-        distanceArr[counter] = (int) distanceCm;
+        distanceArr[counter] = distanceCm;
 
-        if ( counter >= 20 ) {
+        if ( distanceCm <= US_MIN_CM ) {
+            motor->ultrasonicMultiplier = 0;
+        }
+        else if ( distanceCm >= US_MAX_CM ) {
+            motor->ultrasonicMultiplier = 1;
+        }
+        else {
+            motor->ultrasonicMultiplier = ( float ) ( ( distanceCm - 10 ) * 0.1 );
+        }
 
-            for (int i = 0; i < 20; i++) {
+        motor->SetSpeed( motor->currentSpeed );
+
+
+        if ( counter >= SCANS ) {
+
+            for (int i = 0; i < SCANS; i++) {
                 average += distanceArr[i];
             }
 
             average /= counter;
             std::cout << "Average: " << average << std::endl;
 
-            if ( average <= 15 ) {
+            if ( average <= STUCK_CM ) {
                 // Set robot stuck
                 std::cout << "Robot stuck" << std::endl;
                 motor->robotStuck = 1;
@@ -69,6 +88,7 @@ void Ultrasonic( Motors* motor ) {
                 }
                 
             }
+            
             
 
             counter = 0;

@@ -60,7 +60,7 @@ void Detection( Motors* motor ) {
 
             // Back to default speed
             motor->SetAngle( SERVO_BASE_ANGLE );
-            motor->SetSpeed( 80 );
+            motor->SetSpeed( 60 );
             motor->robotStuck = 0;
             std::this_thread::sleep_for( std::chrono::milliseconds( 1000 ) );
 
