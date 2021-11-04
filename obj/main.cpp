@@ -13,7 +13,7 @@
 
 #define SCANS 10 // Amount of scans for ultrasonic sensor
 #define STUCK_CM 15
-#define US_MIN_CM 15
+#define US_MI/N_CM 15
 #define US_MAX_CM 15
 
 void SigintHandler(int s){
@@ -23,24 +23,31 @@ void SigintHandler(int s){
 
 void Ultrasonic( Motors* motor ) {
 
+    // Initialize ultrasonic sensor
     gpioSetMode(TRIGGER, PI_OUTPUT);  // Set GPIO22 as input.
     gpioSetMode(ECHO, PI_INPUT); // Set GPIO23 as output.
 
+    // Declare variables
     int distanceArr[SCANS] = {0};
     int averageArr[5] = {0};
+    int averageCounter = 0;
     int counter;
     int average = 0;
-    
 
     auto start = std::chrono::system_clock::now();
     auto end = std::chrono::system_clock::now();
 
+    // Infinite loop to read sensor data
     for (counter = 0;; counter++) {
-        // set Trigger to HIGH
+
+        // Set sensor Trigger to HIGH to send out pulse
         gpioWrite(TRIGGER, 1);
+        // Wait 10 microseconds for the pulse to be sent
         std::this_thread::sleep_for(std::chrono::microseconds(10));
+        // Set trigger low to stop sending pulses
         gpioWrite(TRIGGER, 0);
 
+        // Wait until pulse gets sent back to echo
         while ( gpioRead(ECHO) == 0 ) {
             start = std::chrono::system_clock::now();
         }
@@ -49,12 +56,16 @@ void Ultrasonic( Motors* motor ) {
             end = std::chrono::system_clock::now();
         }
 
+        // Calculate time elapsed between sent and received pulse
         std::chrono::duration<float> timeElapsed = end - start;
-
+        // Calculate the pulse traveled distance in cm
+        // ( Time * speed of sound ) / Divided by 2 since distance was traveled to the object and back
         int distanceCm = (timeElapsed.count() * 34300) / 2;
 
+        // Add value to the distance array
         distanceArr[counter] = distanceCm;
 
+        // Adjust speed according to distance from object(s)
         if ( distanceCm <= US_MIN_CM ) {
             motor->ultrasonicMultiplier = 0;
         }
@@ -65,8 +76,8 @@ void Ultrasonic( Motors* motor ) {
             motor->ultrasonicMultiplier = ( float ) ( ( distanceCm - 10 ) * 0.1 );
         }
 
+        // Reset the motor speed to adjust with sensor
         motor->SetSpeed( motor->currentSpeed );
-
 
         if ( counter >= SCANS ) {
 
@@ -75,9 +86,45 @@ void Ultrasonic( Motors* motor ) {
             }
 
             average /= counter;
+
+            averageArr[averageCounter] = average;
+            averageCounter++;
+
             std::cout << "Average: " << average << std::endl;
 
-            if ( average <= STUCK_CM ) {
+            if ( averageCounter == 5 ) {
+
+                int tempAverage = 0;
+                averageCounter = 0;
+
+                for ( int i = 0; i < 5; i++ ) {
+                    tempAverage += averageArr[ i ];
+                }
+
+                for ( int i = 0; i < 5; i++) {
+                    
+                    int upperThreshold = averageArr[ i ] + ( averageArr[ i ] * 0.2 );
+                    int lowerThreshold = averageArr[ i ] - ( averageArr[ i ] * 0.2 );
+
+                    if ( tempAverage >= upperThreshold || tempAverage <= lowerThreshold )
+                        break;
+                    else averageCounter++;
+                }
+
+                if ( averageCounter == 5 ) {
+                    // Set robot stuck
+                    std::cout << "Robot stuck 2" << std::endl;
+                    motor->robotStuck = 2;
+
+                    // Wait until detection algorithm reverses
+                    while ( motor->robotStuck ) {
+                        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+                    }
+                }
+                
+                averageCounter = 0;
+            }
+            else if ( average <= STUCK_CM ) {
                 // Set robot stuck
                 std::cout << "Robot stuck" << std::endl;
                 motor->robotStuck = 1;
