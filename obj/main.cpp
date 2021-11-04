@@ -77,7 +77,7 @@ void Ultrasonic( Motors* motor ) {
         }
 
         // Reset the motor speed to adjust with sensor
-        motor->SetSpeed( motor->currentSpeed );
+        //motor->SetSpeed( motor->currentSpeed );
 
         if ( counter >= SCANS ) {
 
@@ -90,8 +90,6 @@ void Ultrasonic( Motors* motor ) {
             averageArr[averageCounter] = average;
             averageCounter++;
 
-            std::cout << "Average: " << average << std::endl;
-
             if ( averageCounter == 5 ) {
 
                 int tempAverage = 0;
@@ -101,15 +99,24 @@ void Ultrasonic( Motors* motor ) {
                     tempAverage += averageArr[ i ];
                 }
 
+                tempAverage /= 5;
+
                 for ( int i = 0; i < 5; i++) {
                     
-                    int upperThreshold = averageArr[ i ] + ( averageArr[ i ] * 0.2 );
-                    int lowerThreshold = averageArr[ i ] - ( averageArr[ i ] * 0.2 );
+                    int upperThreshold = tempAverage + ( tempAverage * 0.1 );
+                    int lowerThreshold = tempAverage - ( tempAverage * 0.1 );
 
-                    if ( tempAverage >= upperThreshold || tempAverage <= lowerThreshold )
+
+                    if ( averageArr[ i ] >= upperThreshold || averageArr[ i ] <= lowerThreshold ) {
                         break;
-                    else averageCounter++;
+                    } 
+                    else {
+                        std::cout << "avg coutner> " << averageCounter << std::endl;
+                        averageCounter++;
+                    } 
                 }
+
+                std::cout << "Avg counter: " << averageCounter << std::endl;
 
                 if ( averageCounter == 5 ) {
                     // Set robot stuck

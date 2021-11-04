@@ -19,12 +19,14 @@ void Detection( Motors* motor ) {
     double t = 0;
 
     // Set motor speed by default
-    motor->SetSpeed( 80 );
+    motor->SetSpeed( 60 );
 
 	while ( cap.isOpened() && !motor->GetControlType() )
     {
         // Check if robot is stuck
         if ( motor->robotStuck ) {
+
+            if ( curveArr[0] == 0 ) motor->robotStuck = 0;
             
             // Temp variables
             int lastAverageCurve;
@@ -165,7 +167,7 @@ void Detection( Motors* motor ) {
 
             // Total execution time
             t = (double) cv::getTickCount() - t;
-            //printf( "Total execution time = %g ms\n", t*1000/ cv::getTickFrequency());
+            printf( "Total execution time = %g ms\n", t*1000/ cv::getTickFrequency());
         }
 
         
