@@ -13,7 +13,7 @@
 
 #define SCANS 10 // Amount of scans for ultrasonic sensor
 #define STUCK_CM 15
-#define US_MI/N_CM 15
+#define US_MIN_CM 15
 #define US_MAX_CM 15
 
 void SigintHandler(int s){
