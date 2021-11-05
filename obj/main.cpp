@@ -201,6 +201,11 @@ int main() {
                     motor->SetSpeed( 0 );
                     break;
                 }
+                else if ( device.event.number == device.ButtonType::X ) {
+                    motor->robotStuck = 0;
+                    break;
+                }
+
                 if ( device.event.number == device.ButtonType::Throttle ) {
                     device.throttle = ( device.event.value ) ? true : false;
                     break;

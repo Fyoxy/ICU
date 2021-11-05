@@ -17,7 +17,7 @@ void DisplayHistogram( cv::Mat src, int height, int width, cv::Mat values, doubl
 int main() {
     // Define video capture
     cv::Mat src;
-	cv::VideoCapture cap("../../test_footage/output.avi");
+	cv::VideoCapture cap(0);
 
     double t = 0;
 
@@ -33,7 +33,7 @@ int main() {
 		}
 
 		// Camera positioned upside-down
-		//cv::flip(src, src, -1);
+		cv::flip(src, src, -1);
 
 		// Performance test
 		t = (double) cv::getTickCount();
@@ -47,7 +47,7 @@ int main() {
         cv::Mat crop;
         // Rect variable( Pos. X, Pos. Y, Width, Height )
         std::cout << src_height << std::endl;
-        cv::Rect crop_region(0, 120, src_width, 120);
+        cv::Rect crop_region(0, 200, src_width, 120);
 
         crop=src(crop_region);
 
@@ -81,7 +81,7 @@ int main() {
 
         // Detect floor
         cv::Mat frame_threshold;
-        inRange(hsv, cv::Scalar(37, 0, 0), cv::Scalar(179, 255, 176), frame_threshold);
+        inRange(hsv, cv::Scalar(35, 0, 0), cv::Scalar(179, 255, 255), frame_threshold);
 
         // Sum image intensity values by columns
         cv::Mat histogramValues;

@@ -19,7 +19,7 @@ void Detection( Motors* motor ) {
     double t = 0;
 
     // Set motor speed by default
-    motor->SetSpeed( 100 );
+    motor->SetSpeed( 80 );
 
     std::cout << "Detection starting" << std::endl;
 
@@ -68,7 +68,7 @@ void Detection( Motors* motor ) {
 
             // Back to default speed
             motor->SetAngle( SERVO_BASE_ANGLE );
-            motor->SetSpeed( 100 );
+            motor->SetSpeed( 80 );
             motor->robotStuck = 0;
             std::this_thread::sleep_for( std::chrono::milliseconds( 1000 ) );
 
@@ -94,7 +94,7 @@ void Detection( Motors* motor ) {
 
             cv::Mat crop;
             // Rect variable( Pos. X, Pos. Y, Width, Height )
-            cv::Rect crop_region(0, 120, src_width, 120);
+            cv::Rect crop_region(0, 200, src_width, 120);
 
             crop=src(crop_region);
 
@@ -128,7 +128,7 @@ void Detection( Motors* motor ) {
 
             // Detect floor
             cv::Mat frame_threshold;
-            inRange(hsv, cv::Scalar(40, 0, 0), cv::Scalar(180, 255, 255), frame_threshold);
+            inRange(hsv, cv::Scalar(35, 0, 0), cv::Scalar(180, 255, 255), frame_threshold);
 
             // Sum image intensity values by columns
             cv::Mat histogramValues;
@@ -159,11 +159,14 @@ void Detection( Motors* motor ) {
             int divider = ( src_width / 2 ) / 200;
             int curve = ( int ) ( average - ( src_width / 2 ) ) / divider;
 
-            curve = SERVO_BASE_ANGLE - curve;
+            curve = SERVO_BASE_ANGLE - curve + 100;
+
+            if ( curve < 1500 ) curve -= 50;
+            else if ( curve > 1500 ) curve += 50;
 
             motor->SetAngle( curve );
 
-            //std::cout << "Average: " << (curve) << std::endl;
+            std::cout << "Average: " << (src_height) << std::endl;
             
             curveArr[curveCounter] = curve;
 
