@@ -21,12 +21,16 @@ void Detection( Motors* motor ) {
     // Set motor speed by default
     motor->SetSpeed( 100 );
 
+    std::cout << "Detection starting" << std::endl;
+
 	while ( cap.isOpened() && !motor->GetControlType() )
     {
         // Check if robot is stuck
-        if ( motor->robotStuck && ( curveCounter != 0 ) ) {
+        if ( motor->robotStuck ) {
 
-            if ( curveArr[0] == 0 ) motor->robotStuck = 0;
+            std::cout << "In stuck" << std::endl;
+
+            if ( curveArr[0] == 0 ) curveArr[0] = SERVO_BASE_ANGLE;
             
             // Temp variables
             int lastAverageCurve;
@@ -56,9 +60,11 @@ void Detection( Motors* motor ) {
 
             // Wait for servo to turn
             std::this_thread::sleep_for( std::chrono::milliseconds( 100 ) );
+            motor->SetSpeed( 0 );
+            std::this_thread::sleep_for( std::chrono::milliseconds( 300 ) );
             // Reverse for 1 second
-            motor->SetSpeed( -80 );
-            std::this_thread::sleep_for( std::chrono::milliseconds( 1000 ) );
+            motor->SetSpeed( -60 );
+            std::this_thread::sleep_for( std::chrono::milliseconds( 1500 ) );
 
             // Back to default speed
             motor->SetAngle( SERVO_BASE_ANGLE );
@@ -167,7 +173,7 @@ void Detection( Motors* motor ) {
 
             // Total execution time
             t = (double) cv::getTickCount() - t;
-            printf( "Total execution time = %g ms\n", t*1000/ cv::getTickFrequency());
+            //printf( "Total execution time = %g ms\n", t*1000/ cv::getTickFrequency());
         }
 
         

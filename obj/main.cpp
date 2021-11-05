@@ -11,10 +11,10 @@
 #define TRIGGER 22
 #define ECHO 23
 
-#define SCANS 10 // Amount of scans for ultrasonic sensor
+#define SCANS 15 // Amount of scans for ultrasonic sensor
 #define STUCK_CM 15
-#define US_MIN_CM 15
-#define US_MAX_CM 15
+#define US_MIN_CM 10
+#define US_MAX_CM 30
 
 void SigintHandler(int s){
     printf("Caught signal %d\n",s);
@@ -66,7 +66,7 @@ void Ultrasonic( Motors* motor ) {
         distanceArr[counter] = distanceCm;
 
         // Adjust speed according to distance from object(s)
-        /*
+        
         if ( distanceCm <= US_MIN_CM ) {
             motor->ultrasonicMultiplier = 0;
         }
@@ -74,21 +74,22 @@ void Ultrasonic( Motors* motor ) {
             motor->ultrasonicMultiplier = 1;
         }
         else {
-            motor->ultrasonicMultiplier = ( float ) ( ( distanceCm - 10 ) * 0.1 );
-        }*/
+            motor->ultrasonicMultiplier = ( float ) ( ( distanceCm - 10 ) * 0.05 );
+            std::cout << motor->ultrasonicMultiplier << std::endl;
+        }
 
         // Reset the motor speed to adjust with sensor
-        //motor->SetSpeed( motor->currentSpeed );
+        motor->SetSpeed( motor->currentSpeed );
 
         if ( counter >= SCANS ) {
 
-            for (int i = 0; i < SCANS; i++) {
-                average += distanceArr[i];
+            for ( int i = 0; i < SCANS; i++ ) {
+                average += distanceArr[ i ];
             }
 
             average /= counter;
 
-            averageArr[averageCounter] = average;
+            averageArr[ averageCounter ] = average;
             averageCounter++;
 
             if ( averageCounter == 5 ) {
@@ -112,12 +113,9 @@ void Ultrasonic( Motors* motor ) {
                         break;
                     } 
                     else {
-                        std::cout << "avg coutner> " << averageCounter << std::endl;
                         averageCounter++;
                     } 
                 }
-
-                std::cout << "Avg counter: " << averageCounter << std::endl;
 
                 if ( averageCounter == 5 ) {
                     // Set robot stuck
@@ -190,7 +188,7 @@ int main() {
         switch (device.event.type)
         {
             case JS_EVENT_BUTTON:
-                if ( device.event.number == device.ButtonType::T ) {
+                if ( ( device.event.number == device.ButtonType::T )  && device.event.value) {
                     motor->SetControlType( Motors::ControlType::Automatic );
                     detectionT = std::thread( Detection, motor );
                     detectionT.detach();
@@ -289,7 +287,10 @@ int main() {
     }
     
     close(device.controller);
-	
+
+    std::cout << "Controller thread stopped" << std::endl;
+    motor->SetSpeed( 90 );
+    for (;;);
 	/*
 	initialize motors
 	run motor inits
