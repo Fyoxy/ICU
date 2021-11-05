@@ -19,7 +19,7 @@ void Detection( Motors* motor ) {
     double t = 0;
 
     // Set motor speed by default
-    motor->SetSpeed( 60 );
+    motor->SetSpeed( 100 );
 
 	while ( cap.isOpened() && !motor->GetControlType() )
     {
@@ -62,7 +62,7 @@ void Detection( Motors* motor ) {
 
             // Back to default speed
             motor->SetAngle( SERVO_BASE_ANGLE );
-            motor->SetSpeed( 60 );
+            motor->SetSpeed( 100 );
             motor->robotStuck = 0;
             std::this_thread::sleep_for( std::chrono::milliseconds( 1000 ) );
 
