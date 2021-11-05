@@ -120,7 +120,7 @@ void Detection( Motors* motor ) {
 
             // Detect floor
             cv::Mat frame_threshold;
-            inRange(hsv, cv::Scalar(37, 0, 0), cv::Scalar(179, 255, 176), frame_threshold);
+            inRange(hsv, cv::Scalar(40, 0, 0), cv::Scalar(180, 255, 255), frame_threshold);
 
             // Sum image intensity values by columns
             cv::Mat histogramValues;
