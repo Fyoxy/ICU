@@ -16,6 +16,8 @@ void Detection( Motors* motor ) {
     cv::Mat src;
 	cv::VideoCapture cap(0);
 
+    std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+
     double t = 0;
 
     // Set motor speed by default
