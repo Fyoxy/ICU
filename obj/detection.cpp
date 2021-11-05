@@ -24,7 +24,7 @@ void Detection( Motors* motor ) {
 	while ( cap.isOpened() && !motor->GetControlType() )
     {
         // Check if robot is stuck
-        if ( motor->robotStuck ) {
+        if ( motor->robotStuck && ( curveCounter != 0 ) ) {
 
             if ( curveArr[0] == 0 ) motor->robotStuck = 0;
             
