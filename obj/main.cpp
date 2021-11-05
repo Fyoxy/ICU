@@ -65,6 +65,8 @@ void Ultrasonic( Motors* motor ) {
         // Add value to the distance array
         distanceArr[counter] = distanceCm;
 
+        std::cout << distanceCm << std::endl;
+
         // Adjust speed according to distance from object(s)
         if ( distanceCm <= US_MIN_CM ) {
             motor->ultrasonicMultiplier = 0;
