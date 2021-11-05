@@ -94,7 +94,7 @@ void Detection( Motors* motor ) {
 
             cv::Mat crop;
             // Rect variable( Pos. X, Pos. Y, Width, Height )
-            cv::Rect crop_region(0, 200, src_width, 120);
+            cv::Rect crop_region(0, src_height - 120, src_width, 120);
 
             crop=src(crop_region);
 
@@ -122,13 +122,26 @@ void Detection( Motors* motor ) {
             cv::Mat image_clahe;
             cvtColor(lab_image, image_clahe, CV_Lab2BGR);
 
+            cv::GaussianBlur(image_clahe, image_clahe, cv::Size(5, 5), 0);
+
             // Convert to HSV
             cv::Mat hsv;
             cvtColor(image_clahe, hsv, CV_BGR2HSV);
 
-            // Detect floor
+            // Paint tape black
+            //cv::Mat tape;
+            //cv::inRange(hsv, cv::Scalar(0, 0, 100), cv::Scalar(180, 255, 255), tape);
+
+            //cv::bitwise_and(black, tape, tape);
+            //cv::bitwise_or(hsv, tape, hsv);
+
+            // Detect floor/tape
             cv::Mat frame_threshold;
-            inRange(hsv, cv::Scalar(35, 0, 0), cv::Scalar(180, 255, 255), frame_threshold);
+            inRange(hsv, cv::Scalar(0, 0, 167), cv::Scalar(180, 67, 255), frame_threshold);
+
+            //cv::bitwise_and( tape, frame_threshold, frame_threshold );
+            //cv::bitwise_not( frame_threshold, frame_threshold );
+            //cv::imshow("TAPE", tape);
 
             // Sum image intensity values by columns
             cv::Mat histogramValues;
