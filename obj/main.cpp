@@ -11,7 +11,7 @@
 #define TRIGGER 22
 #define ECHO 23
 
-#define SCANS 15 // Amount of scans for ultrasonic sensor
+#define SCANS 10 // Amount of scans for ultrasonic sensor
 #define STUCK_CM 15
 #define US_MIN_CM 10
 #define US_MAX_CM 30

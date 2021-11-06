@@ -7,7 +7,7 @@
 
 #define SERVO_BASE_ANGLE 1500 // Base 90 degree angle for servo to drive straight
 #define SERVO_MAX_ANGLE 1700 // Limit servo maximum turning angle
-#define SERVO_MIN_ANGLE 1300 // Limit servo minimum turning angle
+#define SERVO_MIN_ANGLE 1200 // Limit servo minimum turning angle
 #define SERVO_PIN 18 // BCM hardware PWM servo pin
 
 class Motors {

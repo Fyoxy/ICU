@@ -17,7 +17,7 @@ void DisplayHistogram( cv::Mat src, int height, int width, cv::Mat values, doubl
 int main() {
     // Define video capture
     cv::Mat src;
-	cv::VideoCapture cap("../../test_footage/tape.mp4");
+	cv::VideoCapture cap(0);
 
     double t = 0;
 
@@ -33,7 +33,7 @@ int main() {
 		}
 
 		// Camera positioned upside-down
-		//cv::flip(src, src, -1);
+		cv::flip(src, src, -1);
 
 		// Performance test
 		t = (double) cv::getTickCount();
@@ -47,7 +47,7 @@ int main() {
         cv::Mat crop;
         // Rect variable( Pos. X, Pos. Y, Width, Height )
         
-        cv::Rect crop_region(0, src_height - 620, src_width, 620);
+        cv::Rect crop_region(0, src_height - 240, src_width, 240);
 
         crop=src(crop_region);
 
@@ -91,7 +91,7 @@ int main() {
 
         // Detect floortape
         cv::Mat frame_threshold;
-        inRange(hsv, cv::Scalar(0, 0, 167), cv::Scalar(180, 67, 255), frame_threshold);
+        inRange(hsv, cv::Scalar(0, 50, 0), cv::Scalar(180, 255, 255), frame_threshold);
         
         //cv::bitwise_and( tape, frame_threshold, frame_threshold );
         //cv::bitwise_not( frame_threshold, frame_threshold );
