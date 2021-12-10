@@ -25,9 +25,7 @@ void SigintHandler(int s){
 
 void Ultrasonic( Motors* motor ) {
 
-    if (!sensor)
-        std::terminate();
-
+    if (sensor) {
     // Initialize ultrasonic sensor
     gpioSetMode(TRIGGER, PI_OUTPUT);  // Set GPIO22 as input.
     gpioSetMode(ECHO, PI_INPUT); // Set GPIO23 as output.
@@ -156,6 +154,9 @@ void Ultrasonic( Motors* motor ) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     }
+
+    }
+
 
 }
 
