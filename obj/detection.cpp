@@ -21,7 +21,7 @@ void Detection( Motors* motor ) {
     double t = 0;
 
     // Set motor speed by default
-    motor->SetSpeed( 80 );
+    motor->SetSpeed( 60 );
 
     std::cout << "Detection starting" << std::endl;
 
@@ -66,11 +66,11 @@ void Detection( Motors* motor ) {
             std::this_thread::sleep_for( std::chrono::milliseconds( 300 ) );
             // Reverse for 1 second
             motor->SetSpeed( -60 );
-            std::this_thread::sleep_for( std::chrono::milliseconds( 1500 ) );
+            std::this_thread::sleep_for( std::chrono::milliseconds( 1000 ) );
 
             // Back to default speed
             motor->SetAngle( SERVO_BASE_ANGLE );
-            motor->SetSpeed( 80 );
+            motor->SetSpeed( 60 );
             motor->robotStuck = 0;
             std::this_thread::sleep_for( std::chrono::milliseconds( 1000 ) );
 
@@ -96,7 +96,7 @@ void Detection( Motors* motor ) {
 
             cv::Mat crop;
             // Rect variable( Pos. X, Pos. Y, Width, Height )
-            cv::Rect crop_region(0, src_height - 120, src_width, 120);
+            cv::Rect crop_region(0, src_height - 180, src_width, 180);
 
             crop=src(crop_region);
 
@@ -139,10 +139,10 @@ void Detection( Motors* motor ) {
 
             // Detect floor/tape
             cv::Mat frame_threshold;
-            inRange(hsv, cv::Scalar(0, 0, 167), cv::Scalar(180, 67, 255), frame_threshold);
+            inRange(hsv, cv::Scalar(0, 25, 0), cv::Scalar(180, 255, 255), frame_threshold);
 
             //cv::bitwise_and( tape, frame_threshold, frame_threshold );
-            //cv::bitwise_not( frame_threshold, frame_threshold );
+            cv::bitwise_not( frame_threshold, frame_threshold );
             //cv::imshow("TAPE", tape);
 
             // Sum image intensity values by columns
@@ -174,10 +174,10 @@ void Detection( Motors* motor ) {
             int divider = ( src_width / 2 ) / 200;
             int curve = ( int ) ( average - ( src_width / 2 ) ) / divider;
 
-            curve = SERVO_BASE_ANGLE - curve + 100;
+            curve = SERVO_BASE_ANGLE - curve;
 
-            if ( curve < 1500 ) curve -= 50;
-            else if ( curve > 1500 ) curve += 50;
+            //if ( curve < 1500 ) curve -= 50;
+            //else if ( curve > 1500 ) curve += 50;
 
             motor->SetAngle( curve );
 

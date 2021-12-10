@@ -44,7 +44,7 @@ static void on_high_V_thresh_trackbar(int, void *)
 }
 int main(int argc, char* argv[])
 {
-    VideoCapture cap("../../test_footage/tape.mp4");
+    VideoCapture cap(0);
     namedWindow(window_capture_name);
     namedWindow(window_detection_name);
     // Trackbars to set thresholds for HSV values
@@ -61,6 +61,7 @@ int main(int argc, char* argv[])
         {
             break;
         }
+        cv::flip(frame, frame, -1);
         // Convert from BGR to HSV colorspace
         cvtColor(frame, frame_HSV, COLOR_BGR2HSV);
         // Detect the object based on HSV Range Values
