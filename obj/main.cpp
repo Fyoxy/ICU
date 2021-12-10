@@ -16,12 +16,17 @@
 #define US_MIN_CM 10
 #define US_MAX_CM 30
 
+int sensor = 1; 
+
 void SigintHandler(int s){
     printf("Caught signal %d\n",s);
     exit(1); 
 }
 
 void Ultrasonic( Motors* motor ) {
+
+    if (!sensor)
+        std::terminate();
 
     // Initialize ultrasonic sensor
     gpioSetMode(TRIGGER, PI_OUTPUT);  // Set GPIO22 as input.
@@ -203,6 +208,11 @@ int main() {
                 }
                 else if ( device.event.number == device.ButtonType::X ) {
                     motor->robotStuck = 0;
+                    break;
+                }
+                else if ( device.event.number == device.ButtonType::S ) {
+                    if (sensor) sensor = 0;
+                    else sensor = 1;
                     break;
                 }
 
