@@ -45,5 +45,5 @@ This project might see a continuation in the following year.
 
 ## Contributing
 
-Fork it, send pull requests, add issues, basically do whatever and I'll be notified and check out your input.
+Fork it, send pull requests, add issues, basically do whatever and I'll be notified and I'll check out your input.
 Feel free to ask me anything about the project.
