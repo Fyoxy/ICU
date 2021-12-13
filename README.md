@@ -34,7 +34,8 @@ sudo ./main.out
 
 
 #### Video from the competition
-![Video from the competition](https://youtu.be/LKv6RdX_fBk)
+![](https://youtu.be/LKv6RdX_fBk)
+[![Video from the competition](http://img.youtube.com/vi/LKv6RdX_fBk/0.jpg)](http://www.youtube.com/watch?v=LKv6RdX_fBk "Project ICU at Robotex International 2021")
 
 #### Pictures of the robot
 ![Icu Pic 2](https://gitlab.com/Fyoxy/icu/-/raw/main/readme/icu_robot_2.png) ![Icu Pic 1](https://gitlab.com/Fyoxy/icu/-/raw/main/readme/icu_robot_1.png)
