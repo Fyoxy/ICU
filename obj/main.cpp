@@ -16,8 +16,6 @@
 #define US_MIN_CM 10
 #define US_MAX_CM 30
 
-int sensor = 1; 
-
 void SigintHandler(int s){
     printf("Caught signal %d\n",s);
     exit(1); 
@@ -25,7 +23,6 @@ void SigintHandler(int s){
 
 void Ultrasonic( Motors* motor ) {
 
-    if (sensor) {
     // Initialize ultrasonic sensor
     gpioSetMode(TRIGGER, PI_OUTPUT);  // Set GPIO22 as input.
     gpioSetMode(ECHO, PI_INPUT); // Set GPIO23 as output.
@@ -155,22 +152,12 @@ void Ultrasonic( Motors* motor ) {
 
     }
 
-    }
-
-
 }
 
 int main() {
 
     // Window initialization to show image from DisplayHistogram
     //cv::namedWindow("Source and Histogram", cv::WINDOW_AUTOSIZE);
-
-    // Control-c handler
-    struct sigaction sigIntHandler;
-    sigIntHandler.sa_handler = SigintHandler;
-    sigemptyset(&sigIntHandler.sa_mask);
-    sigIntHandler.sa_flags = 0;
-    sigaction(SIGINT, &sigIntHandler, NULL);
 
 	std::cout << "Motors init" << std::endl;
 	Motors* motor = new Motors();
@@ -185,7 +172,7 @@ int main() {
     std::thread detectionT;
     std::thread ultraSonicT;
 
-    ultraSonicT = std::thread( Ultrasonic, motor );
+    //ultraSonicT = std::thread( Ultrasonic, motor );
 	
 	std::cout << "Starting controller listener" << std::endl;
     while ( read_event( device.controller, &device.event ) == 0 ) {
@@ -195,10 +182,11 @@ int main() {
         {
             case JS_EVENT_BUTTON:
                 if ( ( device.event.number == device.ButtonType::T )  && device.event.value) {
+                    /*
                     motor->SetControlType( Motors::ControlType::Automatic );
                     detectionT = std::thread( Detection, motor );
                     detectionT.detach();
-                    led.SetLed( Led::LedColor::BLUE );
+                    led.SetLed( Led::LedColor::BLUE );*/
                     break;
                 }
                 else if ( device.event.number == device.ButtonType::O ) {
