@@ -14,6 +14,8 @@ void Motors::SetSpeed( int speed ) {
 		speed = -100;
 	}
 
+	std::cout << "Set speed is " << speed << std::endl;
+
 	MotorsPWMControl( speed );
 }
 
