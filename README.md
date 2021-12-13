@@ -1,5 +1,6 @@
 
-# TalTech Robotics Club Project ICU aka Folkrace with a camera
+# Project ICU
+### TalTech Robotics Club Project ICU aka Folkrace with a camera
 
 ICU is a folkrace robot that uses visual input to race in a competition known as folkrace. The type of folkrace we intend to compete is hosted by Robotex International. You can find the ruleset from their website https://robotex.international/
 
