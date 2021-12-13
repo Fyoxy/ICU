@@ -13,7 +13,7 @@ Use your favourite compiler to compile the code and make necessary changes in th
 
 The main file is meant to be run on a Raspberry Pi 4 (or 3) with [this](https://www.waveshare.com/motor-driver-hat.htm) motor driver hat. Other components can be found from the following sheet:
 
-![Electronics scheme](https://gitlab.com/Fyoxy/icu/-/raw/master/readme/ICU_Scheme.png)
+![Electronics scheme](https://gitlab.com/Fyoxy/icu/-/raw/master/readme/ICU_Scheme.PNG)
 
 ## Usage
 
