@@ -27,10 +27,21 @@ sudo ./main.out
 ## Development log
 
 ### Footage from code in action
-To be added, I might add more in depth documentation of this project
+
+#### Program live feed
+![Live feed from program](https://gitlab.com/Fyoxy/icu/-/raw/main/readme/icu_in_action.mp4)
+
+#### Video from the competition
+![Video from the competition](Missing yt link)
+soon
+
+#### Pictures of the robot
+![Icu Pic 2](https://gitlab.com/Fyoxy/icu/-/raw/main/readme/icu_robot_2.png) ![Icu Pic 1](https://gitlab.com/Fyoxy/icu/-/raw/main/readme/icu_robot_1.png)
 
 ### 13.12.2021
 This project is finished and we successfully competed at Robotex International 2021. I'd like to thank my project team members @helenents1 and @sander_kajak for helping me make this project a reality.
+
+This project might see a continuation in the following year.
 
 ## Contributing
 
