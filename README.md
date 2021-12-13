@@ -30,11 +30,11 @@ sudo ./main.out
 ### Footage from code in action
 
 #### Program live feed
-![Live feed from program](https://gitlab.com/Fyoxy/icu/-/raw/main/readme/icu_in_action.mp4)
+![icu_in_action](https://user-images.githubusercontent.com/26466364/145877753-310d172d-5546-4853-8253-04d8e667ec97.gif)
+
 
 #### Video from the competition
-![Video from the competition](Missing yt link)
-soon
+![Video from the competition](https://youtu.be/LKv6RdX_fBk)
 
 #### Pictures of the robot
 ![Icu Pic 2](https://gitlab.com/Fyoxy/icu/-/raw/main/readme/icu_robot_2.png) ![Icu Pic 1](https://gitlab.com/Fyoxy/icu/-/raw/main/readme/icu_robot_1.png)
