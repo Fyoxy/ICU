@@ -4,6 +4,12 @@
 
 ICU is a folkrace robot that uses visual input to race in a competition known as folkrace. The type of folkrace we intend to compete is hosted by Robotex International. You can find the ruleset from their website https://robotex.international/
 
+### Project component schematic
+![Build scheme](https://raw.githubusercontent.com/Fyoxy/ICU/main/readme/icu_project_build.png)
+
+### Program wokflow
+![Program scheme](https://raw.githubusercontent.com/Fyoxy/ICU/main/readme/icu_program_scheme.png)
+
 ## Setup
 
 To set this project up for yourself you should have at least OpenCV version 4 installed (I have not tested it with any other versions). Pigpio is also required for servo control.
