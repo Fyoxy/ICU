@@ -18,7 +18,7 @@ The main file is meant to be run on a Raspberry Pi 4 (or 3) with [this](https://
 
 ## Usage
 
-### Please consider that this repository is mostly meant for my personal development. Do not expect this to run flawlessly in Your project as it definently might break or do something unintended! 
+### Please consider that this repository is mostly meant for my personal development. Do not expect this to run flawlessly in Your project as it definitely might break or do something unintended! 
 
 Be sure to run the Pigpio daemon and have a controller connected before running the executable!
 
