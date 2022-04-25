@@ -14,7 +14,7 @@ void Detection( Motors* motor ) {
 
     // Define video capture
     cv::Mat src;
-	cv::VideoCapture cap(0);
+    cv::VideoCapture cap(0);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 
