@@ -7,6 +7,8 @@
 #include <vector>
 #include <numeric>
 
+#include <fstream>
+
 void Dilation( int, void* );
 void Servo_Init();
 void MyFilledCircle( cv::Mat img, cv::Point center );
@@ -17,14 +19,15 @@ void DisplayHistogram( cv::Mat src, int height, int width, cv::Mat values, doubl
 int main() {
     // Define video capture
     cv::Mat src;
-	cv::VideoCapture cap(0);
+	cv::VideoCapture cap("../../test_footage/output.avi");
 
     double t = 0;
+    auto start = std::chrono::system_clock::now();
+    std::vector<double> curves;
+    std::vector<double> times;
 
 	while ( cap.isOpened() )
     {
-        std::cout << "Looping" << std::endl;
-
 		// Send VideoCapture to src cv::Mat
 		cap >> src;
         if(src.empty()) {
@@ -33,7 +36,7 @@ int main() {
 		}
 
 		// Camera positioned upside-down
-		cv::flip(src, src, -1);
+		//cv::flip(src, src, -1);
 
 		// Performance test
 		t = (double) cv::getTickCount();
@@ -42,56 +45,53 @@ int main() {
 		int src_height = src.size().height;
 		int src_width = src.size().width;
 
-		char key = (char) cv::waitKey(30);
-
         cv::Mat crop;
         // Rect variable( Pos. X, Pos. Y, Width, Height )
         
-        cv::Rect crop_region(0, src_height - 240, src_width, 240);
+        cv::Rect crop_region(0, src_height - 180, src_width, 180);
 
         crop=src(crop_region);
 
         // Clahe equalization
         // READ RGB color image and convert it to Lab
-        cv::Mat lab_image;
-        cvtColor(crop, lab_image, CV_BGR2Lab);
+        //cv::Mat lab_image;
+        //cvtColor(crop, lab_image, CV_BGR2Lab);
+//
+        //// Extract the L channel
+        //std::vector<cv::Mat> lab_planes(3);
+        //split(lab_image, lab_planes);  // now we have the L image in lab_planes[0]
+//
+        //// apply the CLAHE algorithm to the L channel
+        //cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE();
+        //clahe->setClipLimit(3);
+        //clahe->setTilesGridSize( cv::Size (8,8) );
+        //cv::Mat dst;
+        //clahe->apply(lab_planes[0], dst);
+//
+        //// Merge the the color planes back into an Lab image
+        //dst.copyTo(lab_planes[0]);
+        //cv::merge(lab_planes, lab_image);
+//
+        //// convert back to RGB
+        //cv::Mat image_clahe;
+        //cvtColor(lab_image, image_clahe, CV_Lab2BGR);
 
-        // Extract the L channel
-        std::vector<cv::Mat> lab_planes(3);
-        split(lab_image, lab_planes);  // now we have the L image in lab_planes[0]
-
-        // apply the CLAHE algorithm to the L channel
-        cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE();
-        clahe->setClipLimit(3);
-        clahe->setTilesGridSize( cv::Size (8,8) );
-        cv::Mat dst;
-        clahe->apply(lab_planes[0], dst);
-
-        // Merge the the color planes back into an Lab image
-        dst.copyTo(lab_planes[0]);
-        cv::merge(lab_planes, lab_image);
-
-        // convert back to RGB
-        cv::Mat image_clahe;
-        cvtColor(lab_image, image_clahe, CV_Lab2BGR);
-
-        cv::GaussianBlur(image_clahe, image_clahe, cv::Size(5, 5), 0);
-
+        //cv::GaussianBlur(image_clahe, image_clahe, cv::Size(5, 5), 0);
+        cv::GaussianBlur(crop, crop, cv::Size(5, 5), 0);
         // Convert to HSV
         cv::Mat hsv;
-        cvtColor(image_clahe, hsv, CV_BGR2HSV);
+        cvtColor(crop, hsv, CV_BGR2HSV);
         
         // Paint tape black
-        cv::Mat tape;
+        //cv::Mat tape;
         //cv::inRange(hsv, cv::Scalar(0, 0, 100), cv::Scalar(180, 255, 255), tape);
 
         //cv::bitwise_and(black, tape, tape);
-        std::cout << src_height << std::endl;
         //cv::bitwise_or(hsv, tape, hsv);
 
         // Detect floortape
         cv::Mat frame_threshold;
-        inRange(hsv, cv::Scalar(0, 50, 0), cv::Scalar(180, 255, 255), frame_threshold);
+        inRange(hsv, cv::Scalar(50, 0, 0), cv::Scalar(180, 255, 255), frame_threshold);
         
         //cv::bitwise_and( tape, frame_threshold, frame_threshold );
         //cv::bitwise_not( frame_threshold, frame_threshold );
@@ -122,17 +122,36 @@ int main() {
         // Find the average value
         double average = VectorAvg(arr);
 
+        printf("curve: %f\n", average);
+
         DisplayHistogram( src, src_height, src_width, histogramValues, average);
-
-        //imshow("hsv", hsv);
-        imshow("detectedFloor", frame_threshold);
-
-		imshow("source", src);
-
+        
 		// Total execution time
 		t = (double) cv::getTickCount() - t;
+        auto end = std::chrono::system_clock::now();
+        std::chrono::duration<double> elapsed_seconds = end-start;
+
+        char key = (char) cv::waitKey(1);
+        curves.push_back(average);
+        times.push_back(elapsed_seconds.count());
+        std::cout << "elapsed time: " << elapsed_seconds.count() << "s" << std::endl;
 		printf( "Total execution time = %g ms\n", t*1000/ cv::getTickFrequency());
+
     }   
+
+    std::ofstream myfile;
+
+    myfile.open ("timecpp.txt");
+    for (int i = 0; i < times.size(); i++){
+	       myfile << times[i] << std::endl;
+	}
+    myfile.close();
+
+    myfile.open ("cruvecpp.txt");
+    for (int i = 0; i < curves.size(); i++){
+	       myfile << curves[i] << std::endl;
+	}
+    myfile.close();
 }
 
 void MyFilledCircle( cv::Mat img, cv::Point center )
@@ -187,5 +206,5 @@ void DisplayHistogram( cv::Mat src, int height, int width, cv::Mat values, doubl
 	addWeighted( src, 1, histogram, 1, 0, thefinal );
 
 	imshow("Source and Histogram", thefinal);
-	imshow("histogram", histogram);
+	//imshow("histogram", histogram);
 }
