@@ -1,3 +1,18 @@
+"""
+* | File        :   connect.py
+* | Author      :   Fyoxy
+* | Function    :   Automatic launch of program
+* | Info        :   Waits for the controller to connect to the 
+*                   system and identifies it by the MAC address.
+*                   After that executes the specified file.
+*                
+*----------------
+* |	This version:   V1.0
+* | Date        :   27.05.2022
+* | Info        :   Working state
+*
+"""
+
 import pydbus, os, time
 
 bus = pydbus.SystemBus()
